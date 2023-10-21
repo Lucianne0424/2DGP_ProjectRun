@@ -1,7 +1,8 @@
 from pico2d import *
 import game_world
+from player import Player
 
-
+canvasSIZE = (1280, 720)
 def handle_events():
     global running
 
@@ -18,6 +19,8 @@ def create_world():
     global running
     running = True
 
+    game_world.add_object(Player())
+
 def update_world():
     game_world.updata()
 
@@ -26,13 +29,13 @@ def render_world():
     game_world.render()
     update_canvas()
 
-open_canvas()
+open_canvas(canvasSIZE[0], canvasSIZE[1])
 create_world()
 # game loop
 while running:
     handle_events()
     update_world()
     render_world()
-    delay(0.01)
+    delay(0.1)
 # finalization code
 close_canvas()

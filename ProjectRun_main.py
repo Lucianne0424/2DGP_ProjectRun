@@ -13,13 +13,15 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
         else:
-            pass
+             player.handle_event(event)
 
 def create_world():
     global running
-    running = True
+    global player
 
-    game_world.add_object(Player())
+    running = True
+    player = Player()
+    game_world.add_object(player)
 
 def update_world():
     game_world.updata()

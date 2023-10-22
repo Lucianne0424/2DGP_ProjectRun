@@ -1,7 +1,7 @@
 import os
 
 from pico2d import load_image
-from sdl2 import SDL_KEYDOWN, SDLK_SPACE
+from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1
 
 os.chdir("./img")
 
@@ -11,6 +11,9 @@ bottom = 100
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
+def Key_down_1(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_1
+
 
 def end_action(e):
     return e[0] == 'END_ACTION'
@@ -18,6 +21,26 @@ def end_action(e):
 def game_over(e):
     return e[0] == 'GameOver' and e[1] <= 0.0
 
+class Damage:
+    @staticmethod
+    def entrance(player, event):
+        player.action = 1
+        player.frame = 0
+        player.Hp -= 10
+
+    @staticmethod
+    def exit(player, event):
+        pass
+
+    @staticmethod
+    def do(player):
+        player.frame = (player.frame + 1) % 7
+        if player.frame == 6:
+            player.state_machine.handle_event(('END_ACTION', 0))
+
+    @staticmethod
+    def draw(player):
+        player.image.clip_draw(player.frame * 120 - 40, player.action * 150, 120, 150, player.x, player.y)
 
 class GameOver:
     @staticmethod
@@ -207,14 +230,15 @@ class StateMachine:
         self.player = player
         self.cur_state = Run
         self.transitions = {
-            Run: {space_down: JumpStart, game_over: GameOver},
+            Run: {space_down: JumpStart, game_over: GameOver, Key_down_1: Damage},
             JumpStart: {end_action: JumpUp, space_down: DoubleJumpStart},
             JumpUp: {end_action: JumpFall, space_down: DoubleJumpStart},
             JumpFall: {end_action: Landing, space_down: DoubleJumpStart},
             DoubleJumpStart: {end_action: DoubleJumpFall},
             DoubleJumpFall: {end_action: Landing},
             Landing: {end_action: Run},
-            GameOver: {game_over: GameOver}
+            GameOver: {game_over: GameOver},
+            Damage: {end_action: Run}
         }
 
     def start(self):

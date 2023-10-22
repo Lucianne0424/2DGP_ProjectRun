@@ -15,6 +15,27 @@ def space_down(e):
 def end_action(e):
     return e[0] == 'END_ACTION'
 
+def game_over(e):
+    return e[0] == 'GameOver' and e[1] <= 0.0
+
+
+class GameOver:
+    @staticmethod
+    def entrance(player, event):
+        player.action = 2
+        player.frame = 0
+
+    @staticmethod
+    def exit(player, event):
+        pass
+
+    @staticmethod
+    def do(player):
+        player.frame = (player.frame + 1) % 11
+
+    @staticmethod
+    def draw(player):
+        player.image.clip_draw((player.frame * 175) + player.frame * 5, player.action * 150, 175, 150, player.x, player.y)
 
 class Landing:
     @staticmethod
@@ -112,7 +133,7 @@ class JumpFall:
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(player.frame * 109, player.action * 150, 109, 150, player.x, player.y)
+        player.image.clip_draw(player.frame * 108, player.action * 150, 108, 150, player.x, player.y)
 
 
 class JumpUp:
@@ -128,14 +149,14 @@ class JumpUp:
 
     @staticmethod
     def do(player):
-        player.count += 1
+        player.frame = (player.frame + 1) % 2
         player.y = bottom + player.G_force()
-        if player.count == 2:
+        if player.frame == 1:
             player.state_machine.handle_event(('END_ACTION', 0))
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(player.frame * 80, player.action * 150, 80, 150, player.x, player.y)
+        player.image.clip_draw(player.frame * 87, player.action * 150, 87, 150, player.x, player.y)
 
 
 class JumpStart:
@@ -174,6 +195,7 @@ class Run:
     @staticmethod
     def do(player):
         player.frame = (player.frame + 1) % 10
+        player.state_machine.handle_event(('GameOver', player.Hp))
 
     @staticmethod
     def draw(player):
@@ -185,13 +207,14 @@ class StateMachine:
         self.player = player
         self.cur_state = Run
         self.transitions = {
-            Run: {space_down: JumpStart},
+            Run: {space_down: JumpStart, game_over: GameOver},
             JumpStart: {end_action: JumpUp, space_down: DoubleJumpStart},
             JumpUp: {end_action: JumpFall, space_down: DoubleJumpStart},
             JumpFall: {end_action: Landing, space_down: DoubleJumpStart},
             DoubleJumpStart: {end_action: DoubleJumpFall},
             DoubleJumpFall: {end_action: Landing},
-            Landing: {end_action: Run}
+            Landing: {end_action: Run},
+            GameOver: {game_over: GameOver}
         }
 
     def start(self):
@@ -216,6 +239,7 @@ class StateMachine:
 class Player:
     def __init__(self):
         self.x, self.y = 100, bottom
+        self.Hp = 100.0
         self.frame = 0
         self.action = 0
         self.count = 0
@@ -229,6 +253,7 @@ class Player:
         self.state_machine.start()
 
     def update(self):
+        self.Hp -= 0.1
         self.state_machine.update()
 
     def handle_event(self, event):

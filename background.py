@@ -13,7 +13,7 @@ class BackGround:
         self.x -= 10
         if self.x < -canvasSIZE[0]:
             remove_object(self)
-            add_object(BackGround(canvasSIZE[0]) + 10,0)
+            add_object(BackGround(canvasSIZE[0] + 10),0)
 
 
     def draw(self):

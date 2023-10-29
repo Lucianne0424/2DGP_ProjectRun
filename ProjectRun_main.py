@@ -1,6 +1,7 @@
 from pico2d import *
 import game_world
 from background import BackGround
+from object_information import setting_stage
 from player import Player
 from point_object import PointObject, add_point_object
 
@@ -27,6 +28,8 @@ def create_world():
 
     game_world.add_object(BackGround(0), 0)
     game_world.add_object(BackGround(game_world.canvasSIZE[0]), 0)
+
+
 
 def update_world():
     game_world.updata()

@@ -1,16 +1,21 @@
 from game_world import canvasSIZE, remove_object, add_object
 from image_load import image_load
-
+from object_information import setting_stage
 
 point_object_level = 1 # 점수 오브젝트 레벨
 PO_gap_count = 0 # 점수 오브젝트 일정 간격마다 출력하기 위한 변수
+point_object_load_count = 0 # 점수 오브젝트의 배치 정보를 저장한 리스트의 인덱스 값
+
+point_object_information = setting_stage()
+point_object_information_len = len(point_object_information)
 
 def add_point_object(): # 일정 간격으로 점수 오브젝트 출력
     global PO_gap_count
-    PO_gap_count = (PO_gap_count + 1) % 10
-    if PO_gap_count == 10 - 1:
-        add_object(PointObject(), 2)
-
+    global point_object_load_count
+    PO_gap_count = (PO_gap_count + 1) % 5
+    if PO_gap_count == 5 - 1:
+        add_object(PointObject(point_object_information[point_object_load_count]), 2)
+        point_object_load_count = (point_object_load_count + 1) % point_object_information_len
 
 def point_object_level_image_load():
     name = 'point_item_candy'

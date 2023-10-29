@@ -2,6 +2,8 @@ from pico2d import *
 import game_world
 from background import BackGround
 from player import Player
+from point_object import PointObject, add_point_object
+
 
 def handle_events():
     global running
@@ -28,6 +30,7 @@ def create_world():
 
 def update_world():
     game_world.updata()
+    add_point_object()
 
 def render_world():
     clear_canvas()

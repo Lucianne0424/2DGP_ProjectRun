@@ -1,12 +1,8 @@
-import os
-
-from pico2d import load_image
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1
 
-os.chdir("./img")
+from image_load import image_load
 
 bottom = 100
-
 
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
@@ -272,7 +268,7 @@ class Player:
         self.jumpPower = 50.0
         self.jumpTime = 0.0
 
-        self.image = load_image('Girl_sheet.png')
+        self.image = image_load('.//img//Character','Girl_sheet.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 

@@ -1,5 +1,13 @@
+import game_framework
 from game_world import canvasSIZE, remove_object, add_object
 from image_load import image_load
+
+
+PIXEL_PER_METER = (10.0 / 0.3)
+BACKGROUND_SPEED_KMPH = 20.0
+BACKGROUND_SPEED_MPM = (BACKGROUND_SPEED_KMPH * 1000.0 / 60.0)
+BACKGROUND_SPEED_MPS = (BACKGROUND_SPEED_MPM / 60.0)
+BACKGROUND_SPEED_PPS = (BACKGROUND_SPEED_MPS * PIXEL_PER_METER)
 
 
 class BackGround:
@@ -10,10 +18,10 @@ class BackGround:
             BackGround.image = image_load('.//img//BackGround', 'testBG.png')
 
     def update(self):
-        self.x -= 10
+        self.x -= BACKGROUND_SPEED_PPS * game_framework.frame_time
         if self.x < -canvasSIZE[0]:
             remove_object(self)
-            add_object(BackGround(canvasSIZE[0] + 10),0)
+            add_object(BackGround(canvasSIZE[0]),0)
 
 
     def draw(self):

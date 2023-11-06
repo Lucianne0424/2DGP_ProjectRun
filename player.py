@@ -1,11 +1,14 @@
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1
 
+import game_framework
 from image_load import image_load
 
 bottom = 100
 
+
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
+
 
 def Key_down_1(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_1
@@ -14,8 +17,20 @@ def Key_down_1(e):
 def end_action(e):
     return e[0] == 'END_ACTION'
 
+
 def game_over(e):
     return e[0] == 'GameOver' and e[1] <= 0.0
+
+
+PIXEL_PER_METER = (10.0 / 0.3)
+PLAYER_SPEED_KMPH = 1.0
+PLAYER_SPEED_MPM = (PLAYER_SPEED_KMPH * 1000.0 / 60.0)
+PLAYER_SPEED_MPS = (PLAYER_SPEED_MPM / 60.0)
+PLAYER_SPEED_PPS = (PLAYER_SPEED_MPS * PIXEL_PER_METER)
+
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+
 
 class Damage:
     @staticmethod
@@ -30,13 +45,14 @@ class Damage:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 1) % 7
-        if player.frame == 6:
+        player.frame = (player.frame + 7 * ACTION_PER_TIME * game_framework.frame_time) % 7
+        if player.frame >= 6:
             player.state_machine.handle_event(('END_ACTION', 0))
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(player.frame * 120 - 40, player.action * 150, 120, 150, player.x, player.y)
+        player.image.clip_draw(int(player.frame) * 120 - 40, player.action * 150, 120, 150, player.x, player.y)
+
 
 class GameOver:
     @staticmethod
@@ -50,11 +66,13 @@ class GameOver:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 1) % 11
+        player.frame = (player.frame + 11 * ACTION_PER_TIME * game_framework.frame_time) % 11
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw((player.frame * 175) + player.frame * 5, player.action * 150, 175, 150, player.x, player.y)
+        player.image.clip_draw((int(player.frame) * 175) + int(player.frame) * 5, player.action * 150, 175, 150,
+                               player.x, player.y)
+
 
 class Landing:
     @staticmethod
@@ -68,14 +86,14 @@ class Landing:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 1) % 4
+        player.frame = (player.frame + 4 * ACTION_PER_TIME * game_framework.frame_time) % 4
 
-        if player.frame == 3:
+        if player.frame >= 3:
             player.state_machine.handle_event(('END_ACTION', 0))
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(player.frame * 110, player.action * 150, 110, 150, player.x, player.y)
+        player.image.clip_draw(int(player.frame) * 110, player.action * 150, 110, 150, player.x, player.y)
 
 
 class DoubleJumpFall:
@@ -90,7 +108,7 @@ class DoubleJumpFall:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 1) % 4
+        player.frame = (player.frame + 4 * ACTION_PER_TIME * game_framework.frame_time) % 4
 
         player.y = player.startY + player.G_force()
         if player.y <= bottom:
@@ -99,7 +117,7 @@ class DoubleJumpFall:
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(player.frame * 86, player.action * 150, 86, 150, player.x, player.y)
+        player.image.clip_draw(int(player.frame) * 86, player.action * 150, 86, 150, player.x, player.y)
 
 
 class DoubleJumpStart:
@@ -117,17 +135,15 @@ class DoubleJumpStart:
 
     @staticmethod
     def do(player):
-        if player.frame < 6:
-            player.frame = (player.frame + 1)
+        player.frame = (player.frame + 8 * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.y = player.startY + player.G_force()
-        player.count += 1
 
-        if player.count == 10:
+        if player.frame >= 7:
             player.state_machine.handle_event(('END_ACTION', 0))
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(player.frame * 102, player.action * 150, 102, 150, player.x, player.y)
+        player.image.clip_draw(int(player.frame) * 102, player.action * 150, 102, 150, player.x, player.y)
 
 
 class JumpFall:
@@ -142,7 +158,7 @@ class JumpFall:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 1)
+        player.frame = (player.frame + 5 * ACTION_PER_TIME * game_framework.frame_time) % 5
         if player.frame > 5:
             player.frame = 5
         player.y = bottom + player.G_force()
@@ -152,7 +168,7 @@ class JumpFall:
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(player.frame * 108, player.action * 150, 108, 150, player.x, player.y)
+        player.image.clip_draw(int(player.frame) * 108, player.action * 150, 108, 150, player.x, player.y)
 
 
 class JumpUp:
@@ -168,14 +184,14 @@ class JumpUp:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 1) % 2
+        player.frame = (player.frame + 2 * ACTION_PER_TIME * game_framework.frame_time) % 2
         player.y = bottom + player.G_force()
-        if player.frame == 1:
+        if player.frame >= 1:
             player.state_machine.handle_event(('END_ACTION', 0))
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(player.frame * 87, player.action * 150, 87, 150, player.x, player.y)
+        player.image.clip_draw(int(player.frame) * 87, player.action * 150, 87, 150, player.x, player.y)
 
 
 class JumpStart:
@@ -191,14 +207,14 @@ class JumpStart:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 1) % 4
+        player.frame = (player.frame + 4 * ACTION_PER_TIME * game_framework.frame_time) % 4
         player.y = bottom + player.G_force()
-        if player.frame == 3:
+        if player.frame >= 3:
             player.state_machine.handle_event(('END_ACTION', 0))
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(player.frame * 108, player.action * 150, 108, 150, player.x, player.y)
+        player.image.clip_draw(int(player.frame) * 108, player.action * 150, 108, 150, player.x, player.y)
 
 
 class Run:
@@ -213,12 +229,12 @@ class Run:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 1) % 10
+        player.frame = (player.frame + 10 * ACTION_PER_TIME * game_framework.frame_time) % 10
         player.state_machine.handle_event(('GameOver', player.Hp))
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(player.frame * 98, player.action * 150, 98, 150, player.x, player.y)
+        player.image.clip_draw(int(player.frame) * 98, player.action * 150, 98, 150, player.x, player.y)
 
 
 class StateMachine:
@@ -268,12 +284,12 @@ class Player:
         self.jumpPower = 50.0
         self.jumpTime = 0.0
 
-        self.image = image_load('.//img//Character','Girl_sheet.png')
+        self.image = image_load('.//img//Character', 'Girl_sheet.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
     def update(self):
-        self.Hp -= 0.1
+        self.Hp = self.Hp - 1.0 * game_framework.frame_time
         self.state_machine.update()
 
     def handle_event(self, event):
@@ -284,5 +300,5 @@ class Player:
 
     def G_force(self):
         h = (self.jumpTime * self.jumpTime * (-self.Graity) / 2) + (self.jumpTime * self.jumpPower)
-        self.jumpTime += 1.0
+        self.jumpTime = self.jumpTime + PLAYER_SPEED_PPS * game_framework.frame_time
         return h

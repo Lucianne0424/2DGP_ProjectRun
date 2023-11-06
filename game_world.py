@@ -33,3 +33,7 @@ def remove_object(o):
             return
 
     raise ValueError('Remove Error')
+
+def clear():
+    for layer in world:
+        layer.clear()

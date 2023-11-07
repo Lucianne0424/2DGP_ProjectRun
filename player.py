@@ -248,7 +248,7 @@ class StateMachine:
             JumpFall: {end_action: Landing, space_down: DoubleJumpStart},
             DoubleJumpStart: {end_action: DoubleJumpFall},
             DoubleJumpFall: {end_action: Landing},
-            Landing: {end_action: Run},
+            Landing: {end_action: Run, space_down: JumpStart},
             GameOver: {game_over: GameOver},
             Damage: {end_action: Run}
         }

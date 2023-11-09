@@ -1,6 +1,7 @@
 from pico2d import draw_rectangle
 
 import game_framework
+import game_world
 from game_world import canvasSIZE, remove_object, add_object
 from image_load import image_load
 from object_information import setting_stage
@@ -26,8 +27,11 @@ def add_point_object(): # 일정 간격으로 점수 오브젝트 출력
     PO_gap_count = (PO_gap_count + 1.0 * game_framework.frame_time)
     if PO_gap_count >= 0.2: # 1초에 점수 오브젝트 5개 생성
         PO_gap_count = 0
-        add_object(PointObject(50 + point_object_information[point_object_load_count] * 50), 2)
+        object_create = PointObject(50 + point_object_information[point_object_load_count] * 50)
+        add_object(object_create, 2)
         point_object_load_count = (point_object_load_count + 1) % point_object_information_len
+        game_world.add_collision_pair('player:object', None, object_create)
+
 
 def point_object_level_image_load():
     name = 'point_item_candy'
@@ -54,3 +58,7 @@ class PointObject:
 
     def get_hit_box(self):
         return self.x - 15, self.y - 15, self.x + 15, self.y + 15
+
+    def handle_collision(self, group, other):
+        if group == 'player:object':
+            game_world.remove_object(self)

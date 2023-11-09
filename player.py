@@ -285,6 +285,8 @@ class Player:
         self.jumpPower = 50.0
         self.jumpTime = 0.0
 
+        self.score = 0
+
         self.image = image_load('.//img//Character', 'Girl_sheet.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
@@ -306,4 +308,8 @@ class Player:
         return h
 
     def get_hit_box(self):
-        return self.x - 50, self.y - 65, self.x + 50, self.y + 65
+        return self.x - 35, self.y - 60, self.x + 35, self.y + 45
+
+    def handle_collision(self, group, other):
+        if group == 'player:object':
+            self.score += 10

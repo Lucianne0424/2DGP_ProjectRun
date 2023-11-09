@@ -24,6 +24,8 @@ def init():
     player = Player()
     game_world.add_object(player, 1)
 
+    game_world.add_collision_pair('player:object', player, None)
+
     game_world.add_object(BackGround(0), 0)
     game_world.add_object(BackGround(game_world.canvasSIZE[0]), 0)
 
@@ -32,6 +34,7 @@ def init():
 def update():
     game_world.updata()
     add_point_object()
+    game_world.handle_collisions()
 
 def draw():
     clear_canvas()

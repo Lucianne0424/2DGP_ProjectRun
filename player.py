@@ -1,3 +1,4 @@
+from pico2d import draw_rectangle
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1
 
 import game_framework
@@ -297,8 +298,12 @@ class Player:
 
     def draw(self):
         self.state_machine.draw()
+        draw_rectangle(*self.get_hit_box())
 
     def G_force(self):
         h = (self.jumpTime * self.jumpTime * (-self.Graity) / 2) + (self.jumpTime * self.jumpPower)
         self.jumpTime = self.jumpTime + PLAYER_SPEED_PPS * game_framework.frame_time
         return h
+
+    def get_hit_box(self):
+        return self.x - 50, self.y - 65, self.x + 50, self.y + 65

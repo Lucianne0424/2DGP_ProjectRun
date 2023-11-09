@@ -1,3 +1,5 @@
+from pico2d import draw_rectangle
+
 import game_framework
 from game_world import canvasSIZE, remove_object, add_object
 from image_load import image_load
@@ -24,7 +26,7 @@ def add_point_object(): # 일정 간격으로 점수 오브젝트 출력
     PO_gap_count = (PO_gap_count + 1.0 * game_framework.frame_time)
     if PO_gap_count >= 0.2: # 1초에 점수 오브젝트 5개 생성
         PO_gap_count = 0
-        add_object(PointObject(point_object_information[point_object_load_count]), 2)
+        add_object(PointObject(50 + point_object_information[point_object_load_count] * 50), 2)
         point_object_load_count = (point_object_load_count + 1) % point_object_information_len
 
 def point_object_level_image_load():
@@ -47,4 +49,8 @@ class PointObject:
             remove_object(self)
 
     def draw(self):
-        self.image.draw(self.x, 50 + self.y * 50, 30, 30)
+        self.image.draw(self.x, self.y, 30, 30)
+        draw_rectangle(*self.get_hit_box())
+
+    def get_hit_box(self):
+        return self.x - 15, self.y - 15, self.x + 15, self.y + 15

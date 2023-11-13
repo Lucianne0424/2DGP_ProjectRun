@@ -3,11 +3,12 @@ import game_framework
 import game_world
 
 import coin_object
+import magnet_object
 import point_object
 from global_variable import stage, Booster_state
 
 stage1_object_pos_y = [
-    (2, 1), (0, 1), (0, 1), (0, 2), (0, 3), (1, 4), (0, 3), (0, 2), (0, 1),
+    (2, 1), (0, 1), (0, 1), (3, 2), (0, 3), (1, 4), (0, 3), (0, 2), (0, 1),
     (0, 1), (0, 2), (0, 3), (0, 2), (0, 1), (1, 1), (0, 1), (1, 1), (0, 1),
 ]  # 오브젝트가 생성 할 값들의 정보 ( stage1_object_pos_y[][i] i가 0이면 어떤 오브젝트인지, 1은 오브젝트의 높이를 뜻함.
 
@@ -47,5 +48,10 @@ def object_add():  # 일정 간격으로 오브젝트 생성
             object_create = booster_object.BoosterObject(50 + object_information[object_load_count][1] * 50)
             game_world.add_object(object_create, 2)
             game_world.add_collision_pair('player:booster_object', None, object_create)
+
+        elif object_information[object_load_count][0] == 3:
+            object_create = magnet_object.MagnetObject(50 + object_information[object_load_count][1] * 50)
+            game_world.add_object(object_create, 2)
+            game_world.add_collision_pair('player:magnet_object', None, object_create)
 
         object_load_count = (object_load_count + 1) % object_information_len

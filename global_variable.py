@@ -59,9 +59,11 @@ class Magnet_state:
 
         pos1 = Magnet_state.return_magnet_pos()
         draw_in_size = 300
-        if pos1[0] - draw_in_size <= x and pos1[0] + draw_in_size >= x and pos1[1] - draw_in_size <= y and pos1[
-            1] + draw_in_size >= y:
-            t = 0.005
+        if pos1[0] - draw_in_size <= x and pos1[0] + draw_in_size >= x and pos1[1] - draw_in_size <= y and pos1[1] + draw_in_size >= y:
+            if pos1[0] > x:
+                t = 0.1
+            else:
+                t = 0.01
             x1 = (1 - t) * x + t * pos1[0]
             y1 = (1 - t) * y + t * pos1[1]
             return [x1, y1]

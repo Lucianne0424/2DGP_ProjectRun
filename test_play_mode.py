@@ -33,6 +33,7 @@ def init():
 
     game_world.add_collision_pair('player:point_object', player, None)
     game_world.add_collision_pair('player:coin_object', player, None)
+    game_world.add_collision_pair('player:booster_object', player, None)
 
     game_world.add_object(BackGround(0), 0)
     game_world.add_object(BackGround(game_world.canvasSIZE[0]), 0)

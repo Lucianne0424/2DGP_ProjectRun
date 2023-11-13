@@ -4,12 +4,8 @@ import game_world
 
 import coin_object
 import point_object
+from global_variable import stage, Booster_state
 
-PIXEL_PER_METER = (10.0 / 0.3)
-OBJECT_SPEED_KMPH = 30.0
-OBJECT_SPEED_PPS = ((OBJECT_SPEED_KMPH * 1000.0 / 60.0) / 60.0) * PIXEL_PER_METER
-
-stage = 1
 stage1_object_pos_y = [
     (2, 1), (0, 1), (0, 1), (0, 2), (0, 3), (1, 4), (0, 3), (0, 2), (0, 1),
     (0, 1), (0, 2), (0, 3), (0, 2), (0, 1), (1, 1), (0, 1), (1, 1), (0, 1),
@@ -34,7 +30,7 @@ def object_add():  # 일정 간격으로 오브젝트 생성
     global object_gap_count
     global object_load_count
     object_gap_count = (object_gap_count + 1.0 * game_framework.frame_time)
-    if object_gap_count >= (0.2 / game_world.game_speed):  # 1초에 점수 오브젝트 5개 생성
+    if object_gap_count >= (0.2 / game_world.game_speed / Booster_state.return_booster_speed()):  # 1초에 점수 오브젝트 5개 생성
         object_gap_count = 0
 
         if object_information[object_load_count][0] == 0:

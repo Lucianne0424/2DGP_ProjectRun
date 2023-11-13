@@ -5,9 +5,12 @@ import game_world
 import object_information
 
 from game_world import canvasSIZE, remove_object
+from global_variable import OBJECT_SPEED_PPS, Booster_state
 from image_load import image_load
 
-coin = 0
+
+
+
 
 
 class CoinObject:
@@ -20,7 +23,7 @@ class CoinObject:
             CoinObject.image = image_load('.//img//Coin', "Coin.png")
 
     def update(self):
-        self.x -= (object_information.OBJECT_SPEED_PPS * game_framework.frame_time) * game_world.game_speed
+        self.x -= (OBJECT_SPEED_PPS * game_framework.frame_time) * game_world.game_speed * Booster_state.return_booster_speed()
         if self.x <= 0 - 30:
             remove_object(self)
 

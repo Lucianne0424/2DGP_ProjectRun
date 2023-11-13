@@ -1,9 +1,12 @@
-from pico2d import draw_rectangle
+from pico2d import draw_rectangle, get_time
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1
 
 import game_framework
+from global_variable import booster_time, Booster_state
+
 from image_load import image_load
 from point_object import point_object_level
+
 
 bottom = 100
 
@@ -88,7 +91,7 @@ class Landing:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 4 * ACTION_PER_TIME * game_framework.frame_time) % 4
+        player.frame = (player.frame + 4 * ACTION_PER_TIME * game_framework.frame_time * Booster_state.return_booster_speed()) % 4
 
         if player.frame >= 3:
             player.state_machine.handle_event(('END_ACTION', 0))
@@ -110,7 +113,7 @@ class DoubleJumpFall:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 4 * ACTION_PER_TIME * game_framework.frame_time) % 4
+        player.frame = (player.frame + 4 * ACTION_PER_TIME * game_framework.frame_time * Booster_state.return_booster_speed()) % 4
 
         player.y = player.startY + player.G_force()
         if player.y <= bottom:
@@ -137,7 +140,7 @@ class DoubleJumpStart:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 8 * ACTION_PER_TIME * game_framework.frame_time) % 8
+        player.frame = (player.frame + 8 * ACTION_PER_TIME * game_framework.frame_time * Booster_state.return_booster_speed()) % 8
         player.y = player.startY + player.G_force()
 
         if player.frame >= 7:
@@ -160,7 +163,7 @@ class JumpFall:
 
     @staticmethod
     def do(player):
-        player.frame = min((player.frame + 5 * ACTION_PER_TIME * game_framework.frame_time), 5)
+        player.frame = min((player.frame + 5 * ACTION_PER_TIME * game_framework.frame_time * Booster_state.return_booster_speed()), 5)
         player.y = bottom + player.G_force()
         if player.y <= bottom:
             player.y = bottom
@@ -184,7 +187,7 @@ class JumpUp:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 2 * ACTION_PER_TIME * game_framework.frame_time) % 2
+        player.frame = (player.frame + 2 * ACTION_PER_TIME * game_framework.frame_time * Booster_state.return_booster_speed()) % 2
         player.y = bottom + player.G_force()
         if player.frame >= 1:
             player.state_machine.handle_event(('END_ACTION', 0))
@@ -207,7 +210,7 @@ class JumpStart:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 4 * ACTION_PER_TIME * game_framework.frame_time) % 4
+        player.frame = (player.frame + 4 * ACTION_PER_TIME * game_framework.frame_time * Booster_state.return_booster_speed()) % 4
         player.y = bottom + player.G_force()
         if player.frame >= 3:
             player.state_machine.handle_event(('END_ACTION', 0))
@@ -229,7 +232,7 @@ class Run:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 10 * ACTION_PER_TIME * game_framework.frame_time) % 10
+        player.frame = (player.frame + 10 * ACTION_PER_TIME * game_framework.frame_time * Booster_state.return_booster_speed()) % 10
         player.state_machine.handle_event(('GameOver', player.Hp))
 
     @staticmethod
@@ -271,7 +274,6 @@ class StateMachine:
     def draw(self):
         self.cur_state.draw(self.player)
 
-
 class Player:
     def __init__(self):
         self.x, self.y = 200, bottom
@@ -294,6 +296,8 @@ class Player:
     def update(self):
         self.Hp = self.Hp - 1.0 * game_framework.frame_time
         self.state_machine.update()
+        if get_time() - Booster_state.return_booster_time() >= 5 and Booster_state.return_booster_time() != False:
+            Booster_state.booster_change(False, 1.0)
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
@@ -304,7 +308,7 @@ class Player:
 
     def G_force(self):
         h = (self.jumpTime * self.jumpTime * (-self.Graity) / 2) + (self.jumpTime * self.jumpPower)
-        self.jumpTime = self.jumpTime + PLAYER_SPEED_PPS * game_framework.frame_time
+        self.jumpTime = self.jumpTime + PLAYER_SPEED_PPS * game_framework.frame_time * max(1.0, Booster_state.return_booster_speed() / 2)
         return h
 
     def get_hit_box(self):
@@ -317,3 +321,9 @@ class Player:
         if group == 'player:coin_object':
             self.coin += 10
             print("coin : ", self.coin)
+
+        if group == 'player:booster_object':
+            Booster_state.booster_change(get_time(), 3.0)
+
+
+

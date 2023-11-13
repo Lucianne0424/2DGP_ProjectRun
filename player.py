@@ -2,7 +2,7 @@ from pico2d import draw_rectangle, get_time
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1
 
 import game_framework
-from global_variable import booster_time, Booster_state
+from global_variable import Booster_state, Magnet_state
 
 from image_load import image_load
 from point_object import point_object_level
@@ -276,7 +276,7 @@ class StateMachine:
 
 class Player:
     def __init__(self):
-        self.x, self.y = 200, bottom
+        self.x, self.y = 300, bottom
         self.Hp = 100.0
         self.frame = 0
         self.action = 0
@@ -299,12 +299,20 @@ class Player:
         if get_time() - Booster_state.return_booster_time() >= 5 and Booster_state.return_booster_time() != False:
             Booster_state.booster_change(False, 1.0)
 
+        if Magnet_state.return_magnet_time() != False:
+            Magnet_state.update_magnet_pos(self.x, self.y)
+            if get_time() - Magnet_state.return_magnet_time() >= 5:
+                Magnet_state.magnet_change(False)
+
+
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
 
     def draw(self):
         self.state_machine.draw()
         draw_rectangle(*self.get_hit_box())
+        if Magnet_state.return_magnet_time() != False:
+            draw_rectangle(*self.get_magnet_hit_box())
 
     def G_force(self):
         h = (self.jumpTime * self.jumpTime * (-self.Graity) / 2) + (self.jumpTime * self.jumpPower)
@@ -313,6 +321,10 @@ class Player:
 
     def get_hit_box(self):
         return self.x - 35, self.y - 60, self.x + 35, self.y + 45
+    def get_magnet_hit_box(self):
+        pos = Magnet_state.return_magnet_pos()
+        draw_in_size = 300
+        return pos[0] - draw_in_size, pos[1] - draw_in_size, pos[0] + draw_in_size, pos[1] + draw_in_size
 
     def handle_collision(self, group, other):
         if group == 'player:point_object':
@@ -324,6 +336,10 @@ class Player:
 
         if group == 'player:booster_object':
             Booster_state.booster_change(get_time(), 3.0)
+
+        if group == 'player:magnet_object':
+            Magnet_state.magnet_change(get_time())
+            Magnet_state.update_magnet_pos(self.x, self.y)
 
 
 

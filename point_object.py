@@ -3,9 +3,8 @@ from pico2d import draw_rectangle
 import game_framework
 import game_world
 from game_world import canvasSIZE, remove_object
-from global_variable import OBJECT_SPEED_PPS, booster_speed, Booster_state
+from global_variable import OBJECT_SPEED_PPS, booster_speed, Booster_state, Magnet_state
 from image_load import image_load
-
 
 point_object_level = 1  # 점수 오브젝트 레벨
 
@@ -35,6 +34,7 @@ class PointObject:
         if point_object_level != PointObject.level:
             PointObject.image = image_load('.//img//Point', point_object_level_image_load())
             PointObject.level = point_object_level
+        self.x, self.y = Magnet_state.magnet_checking(self.x, self.y)
 
     def draw(self):
         self.image.draw(self.x, self.y, 30, 30)

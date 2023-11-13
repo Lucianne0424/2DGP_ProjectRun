@@ -2,14 +2,10 @@ from pico2d import draw_rectangle
 
 import game_framework
 import game_world
-import object_information
 
 from game_world import canvasSIZE, remove_object
-from global_variable import OBJECT_SPEED_PPS, Booster_state
+from global_variable import OBJECT_SPEED_PPS, Booster_state, Magnet_state
 from image_load import image_load
-
-
-
 
 
 
@@ -26,6 +22,7 @@ class CoinObject:
         self.x -= (OBJECT_SPEED_PPS * game_framework.frame_time) * game_world.game_speed * Booster_state.return_booster_speed()
         if self.x <= 0 - 30:
             remove_object(self)
+        self.x, self.y = Magnet_state.magnet_checking(self.x, self.y)
 
     def draw(self):
         self.image.draw(self.x, self.y, 30, 30)

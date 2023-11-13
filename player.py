@@ -285,6 +285,7 @@ class Player:
         self.jumpTime = 0.0
 
         self.score = 0
+        self.coin = 0
 
         self.image = image_load('.//img//Character', 'Girl_sheet.png')
         self.state_machine = StateMachine(self)
@@ -310,5 +311,9 @@ class Player:
         return self.x - 35, self.y - 60, self.x + 35, self.y + 45
 
     def handle_collision(self, group, other):
-        if group == 'player:object':
+        if group == 'player:point_object':
             self.score += 10 * point_object_level
+            print("score : ", self.score)
+        if group == 'player:coin_object':
+            self.coin += 10
+            print("coin : ", self.coin)

@@ -4,9 +4,8 @@ import game_framework
 import game_world
 import point_object
 from background import BackGround
-from object_information import setting_stage
+from object_information import setting_stage, object_add
 from player import Player
-from point_object import PointObject, add_point_object
 
 
 def handle_events():
@@ -23,7 +22,8 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_F5:
             point_object.point_object_level = (point_object.point_object_level) % 17 + 1
         else:
-             player.handle_event(event)
+            player.handle_event(event)
+
 
 def init():
     global player
@@ -31,27 +31,33 @@ def init():
     player = Player()
     game_world.add_object(player, 1)
 
-    game_world.add_collision_pair('player:object', player, None)
+    game_world.add_collision_pair('player:point_object', player, None)
+    game_world.add_collision_pair('player:coin_object', player, None)
 
     game_world.add_object(BackGround(0), 0)
     game_world.add_object(BackGround(game_world.canvasSIZE[0]), 0)
 
+    setting_stage()
 
 
 def update():
     game_world.updata()
-    add_point_object()
+    object_add()
     game_world.handle_collisions()
+
 
 def draw():
     clear_canvas()
     game_world.render()
     update_canvas()
 
+
 def finish():
     game_world.clear()
     pass
 
+
 def pause(): pass
+
 
 def resume(): pass

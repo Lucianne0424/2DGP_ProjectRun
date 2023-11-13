@@ -41,16 +41,21 @@ def point_object_level_image_load():
 
 class PointObject:
     image = None
+    level = 0 # point_object_level과 level의 값이 다르면 이미지를 새롭게 로드한다.
     def __init__(self, y = 1):
         self.x = canvasSIZE[0] + 30
         self.y = y
         if PointObject.image == None:
             PointObject.image = image_load('.//img//Point', point_object_level_image_load())
+            PointObject.level = point_object_level
 
     def update(self):
         self.x -= (P_O_SPEED_PPS * game_framework.frame_time)* game_world.game_speed
         if self.x <= 0 - 30:
             remove_object(self)
+        if point_object_level != PointObject.level:
+            PointObject.image = image_load('.//img//Point', point_object_level_image_load())
+            PointObject.level = point_object_level
 
     def draw(self):
         self.image.draw(self.x, self.y, 30, 30)

@@ -2,6 +2,7 @@ from pico2d import *
 
 import game_framework
 import game_world
+import point_object
 from background import BackGround
 from object_information import setting_stage
 from player import Player
@@ -15,6 +16,12 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_F1:
+            game_world.game_speed = min(10.0, game_world.game_speed + 0.5)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_F2:
+            game_world.game_speed = max(1.0, game_world.game_speed - 0.5)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_F5:
+            point_object.point_object_level = (point_object.point_object_level) % 17 + 1
         else:
              player.handle_event(event)
 

@@ -25,7 +25,7 @@ def add_point_object(): # 일정 간격으로 점수 오브젝트 출력
     global PO_gap_count
     global point_object_load_count
     PO_gap_count = (PO_gap_count + 1.0 * game_framework.frame_time)
-    if PO_gap_count >= 0.2: # 1초에 점수 오브젝트 5개 생성
+    if PO_gap_count >= (0.2 / game_world.game_speed): # 1초에 점수 오브젝트 5개 생성
         PO_gap_count = 0
         object_create = PointObject(50 + point_object_information[point_object_load_count] * 50)
         add_object(object_create, 2)
@@ -48,7 +48,7 @@ class PointObject:
             PointObject.image = image_load('.//img//Point', point_object_level_image_load())
 
     def update(self):
-        self.x -= P_O_SPEED_PPS * game_framework.frame_time
+        self.x -= (P_O_SPEED_PPS * game_framework.frame_time)* game_world.game_speed
         if self.x <= 0 - 30:
             remove_object(self)
 

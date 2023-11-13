@@ -5,6 +5,7 @@ canvasSIZE = (1280, 720)
 objects = [[] for _ in range(3)]  # 레이어 구별
 # 충돌 그룹 정보를 dict로 표현
 collision_pairs = {}
+game_speed = 5.0
 
 
 # 충돌처리를 위한 객채들 그룹화

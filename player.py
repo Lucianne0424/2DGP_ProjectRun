@@ -3,6 +3,7 @@ from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1
 
 import game_framework
 from image_load import image_load
+from point_object import point_object_level
 
 bottom = 100
 
@@ -159,9 +160,7 @@ class JumpFall:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 5 * ACTION_PER_TIME * game_framework.frame_time) % 5
-        if player.frame > 5:
-            player.frame = 5
+        player.frame = min((player.frame + 5 * ACTION_PER_TIME * game_framework.frame_time), 5)
         player.y = bottom + player.G_force()
         if player.y <= bottom:
             player.y = bottom
@@ -312,4 +311,4 @@ class Player:
 
     def handle_collision(self, group, other):
         if group == 'player:object':
-            self.score += 10
+            self.score += 10 * point_object_level

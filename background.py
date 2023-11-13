@@ -1,4 +1,5 @@
 import game_framework
+import game_world
 from game_world import canvasSIZE, remove_object, add_object
 from image_load import image_load
 
@@ -18,10 +19,11 @@ class BackGround:
             BackGround.image = image_load('.//img//BackGround', 'testBG.png')
 
     def update(self):
-        self.x -= BACKGROUND_SPEED_PPS * game_framework.frame_time
-        if self.x < -canvasSIZE[0]:
+        self.x -= (BACKGROUND_SPEED_PPS * game_framework.frame_time) * game_world.game_speed
+        if self.x <= -canvasSIZE[0]:
             remove_object(self)
-            add_object(BackGround(canvasSIZE[0]),0)
+            background = BackGround(canvasSIZE[0])
+            add_object(background, 0)
 
 
     def draw(self):

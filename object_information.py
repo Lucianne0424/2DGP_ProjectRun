@@ -36,7 +36,7 @@ def setting_stage():
 object_gap_count = 0  # 오브젝트 일정 간격마다 출력하기 위한 변수
 object_load_count = 0  # 오브젝트의 배치 정보를 저장한 리스트의 인덱스 값
 
-togle = False
+
 def object_add():  # 일정 간격으로 오브젝트 생성
     global object_gap_count
     global object_load_count

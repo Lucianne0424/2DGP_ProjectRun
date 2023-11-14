@@ -1,5 +1,5 @@
 from pico2d import draw_rectangle, get_time
-from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1
+from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1, SDLK_s
 
 import game_framework
 from global_variable import Booster_state, Magnet_state
@@ -293,6 +293,8 @@ class Player:
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
+        self.skill_time = False
+
     def update(self):
         self.Hp = self.Hp - 1.0 * game_framework.frame_time
         self.state_machine.update()
@@ -303,9 +305,14 @@ class Player:
             Magnet_state.update_magnet_pos(self.x, self.y)
             if get_time() - Magnet_state.return_magnet_time() >= 5:
                 Magnet_state.magnet_change(False)
+        if self.skill_time != False and get_time() - self.skill_time >= 10:
+            self.skill_time = False
 
 
     def handle_event(self, event):
+        if self.skill_time == False and event.key == SDLK_s:
+            Booster_state.booster_change(get_time(), 5.0)
+            self.skill_time = get_time()
         self.state_machine.handle_event(('INPUT', event))
 
     def draw(self):

@@ -21,6 +21,12 @@ def handle_events():
             game_world.game_speed = max(1.0, game_world.game_speed - 0.5)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_F5:
             point_object.point_object_level = (point_object.point_object_level) % 17 + 1
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_F4:
+            if game_world.game_speed <= 0.0:
+                game_world.game_speed = 1.0
+            else:
+                game_world.game_speed = 0.0
+
         else:
             player.handle_event(event)
 

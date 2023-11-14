@@ -2,6 +2,7 @@ from pico2d import draw_rectangle, get_time
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1, SDLK_s
 
 import game_framework
+import game_world
 from global_variable import Booster_state, Magnet_state
 
 from image_load import image_load
@@ -296,6 +297,7 @@ class Player:
         self.skill_time = False
 
     def update(self):
+        if game_world.game_speed <= 0.0: return
         self.Hp = self.Hp - 1.0 * game_framework.frame_time
         self.state_machine.update()
         if get_time() - Booster_state.return_booster_time() >= 5 and Booster_state.return_booster_time() != False:
@@ -310,6 +312,7 @@ class Player:
 
 
     def handle_event(self, event):
+        if game_world.game_speed <= 0.0: return
         if self.skill_time == False and event.key == SDLK_s:
             Booster_state.booster_change(get_time(), 5.0)
             self.skill_time = get_time()
@@ -322,6 +325,7 @@ class Player:
             draw_rectangle(*self.get_magnet_hit_box())
 
     def G_force(self):
+        if game_world.game_speed <= 0.0: return
         h = (self.jumpTime * self.jumpTime * (-self.Graity) / 2) + (self.jumpTime * self.jumpPower)
         self.jumpTime = self.jumpTime + PLAYER_SPEED_PPS * game_framework.frame_time * max(1.0, Booster_state.return_booster_speed() / 2)
         return h

@@ -1,12 +1,9 @@
 from pico2d import draw_rectangle
 
-
-import game_speed
-import game_world
-from global_variable import canvasSIZE
-
-from image_load import image_load
-from magnet_object import Magnet_state
+from SourceCode.Etc import game_speed, game_world
+from SourceCode.Etc.global_variable import canvasSIZE
+from SourceCode.Etc.image_load import image_load
+from SourceCode.Object.magnet_object import Magnet_state
 
 point_object_level = 1  # 점수 오브젝트 레벨
 

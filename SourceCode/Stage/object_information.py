@@ -1,12 +1,6 @@
-import booster_object
-import game_framework
-import game_speed
-import game_world
-
-import coin_object
-import magnet_object
-import point_object
-from global_variable import stage
+from SourceCode.Etc import game_speed, game_framework, game_world
+from SourceCode.Etc.global_variable import stage
+from SourceCode.Object import booster_object, point_object, coin_object, magnet_object
 
 stage1_object_pos_y = [
     (4, 1), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),

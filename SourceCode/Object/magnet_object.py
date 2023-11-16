@@ -1,10 +1,9 @@
 from pico2d import draw_rectangle
 
-import game_speed
-
-from game_world import remove_object
-from global_variable import canvasSIZE
-from image_load import image_load
+from SourceCode.Etc import game_speed
+from SourceCode.Etc.game_world import remove_object
+from SourceCode.Etc.global_variable import canvasSIZE
+from SourceCode.Etc.image_load import image_load
 
 magnet_time = False
 magnet_pos = []

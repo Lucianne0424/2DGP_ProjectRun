@@ -1,14 +1,11 @@
 from pico2d import *
 
-import game_framework
-import game_speed
-import game_world
-import point_object
-
-from background import BackGround
-from global_variable import canvasSIZE
-from object_information import setting_stage, object_add
-from player import Player
+from SourceCode.Character.player import Player
+from SourceCode.Etc import game_framework, game_speed, game_world
+from SourceCode.Etc.global_variable import canvasSIZE
+from SourceCode.Object import point_object
+from SourceCode.Stage.background import BackGround
+from SourceCode.Stage.object_information import setting_stage, object_add
 
 
 def handle_events():

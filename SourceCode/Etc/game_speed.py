@@ -1,6 +1,6 @@
 # 미터당 몇 픽셀인지
-import game_framework
-import booster_object
+from SourceCode.Etc import game_framework
+from SourceCode.Object import booster_object
 
 # 픽셀당 미터 계산
 PIXEL_PER_METER = (10.0 / 0.3)

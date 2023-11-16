@@ -1,8 +1,5 @@
-import game_world
-import global_variable
-import game_speed
-
-from image_load import image_load
+from SourceCode.Etc import game_world, game_speed, global_variable
+from SourceCode.Etc.image_load import image_load
 
 
 def add_back_ground():

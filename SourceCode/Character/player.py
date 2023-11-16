@@ -1,13 +1,11 @@
 from pico2d import draw_rectangle, get_time
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1, SDLK_s
 
-import game_framework
-import game_speed
-from booster_object import Booster_state
-
-from image_load import image_load
-from magnet_object import Magnet_state
-from point_object import point_object_level
+from SourceCode.Etc import game_speed, game_framework
+from SourceCode.Etc.image_load import image_load
+from SourceCode.Object.booster_object import Booster_state
+from SourceCode.Object.magnet_object import Magnet_state
+from SourceCode.Object.point_object import point_object_level
 
 bottom = 100
 

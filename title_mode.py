@@ -9,10 +9,12 @@ from image_load import image_load
 
 def init():
     global image
-    image = image_load('img/Title','title.png')
+    image = image_load('img/Title', 'title.png')
+
 
 def finish():
     pass
+
 
 def handle_events():
     events = get_events()
@@ -27,10 +29,15 @@ def handle_events():
 
 def update():
     pass
+
+
 def draw():
     clear_canvas()
-    image.draw_to_origin(0, 0, canvasSIZE[0],canvasSIZE[1])
+    image.draw_to_origin(0, 0, canvasSIZE[0], canvasSIZE[1])
     update_canvas()
 
+
 def pause(): pass
+
+
 def resume(): pass

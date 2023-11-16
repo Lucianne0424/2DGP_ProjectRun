@@ -2,9 +2,11 @@ from pico2d import draw_rectangle
 
 import game_framework
 import game_world
+import global_variable
+from booster_object import Booster_state
 from game_world import canvasSIZE, remove_object
-from global_variable import OBJECT_SPEED_PPS, booster_speed, Booster_state, Magnet_state
 from image_load import image_load
+from magnet_object import Magnet_state
 
 point_object_level = 1  # 점수 오브젝트 레벨
 
@@ -28,7 +30,7 @@ class PointObject:
             PointObject.level = point_object_level
 
     def update(self):
-        self.x -= (OBJECT_SPEED_PPS * game_framework.frame_time) * game_world.game_speed * Booster_state.return_booster_speed()
+        self.x -= (global_variable.OBJECT_SPEED_PPS * game_framework.frame_time) * game_world.game_speed * Booster_state.return_booster_speed()
         if self.x <= 0 - 30:
             remove_object(self)
         if point_object_level != PointObject.level:

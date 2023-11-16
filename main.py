@@ -3,7 +3,6 @@ from pico2d import open_canvas, close_canvas
 import game_framework
 import game_world
 
-
 # import test_play_mode as start_mode
 import title_mode as start_mode
 

@@ -1,16 +1,14 @@
 import game_framework
 import game_world
+from booster_object import Booster_state
 from game_world import canvasSIZE, remove_object, add_object
-from global_variable import BACKGROUND_SPEED_PPS, Booster_state
+from global_variable import BACKGROUND_SPEED_PPS
 from image_load import image_load
-
-
-
-
 
 
 class BackGround:
     image = None
+
     def __init__(self, x):
         self.x = x
         if BackGround.image == None:
@@ -23,6 +21,5 @@ class BackGround:
             background = BackGround(canvasSIZE[0])
             add_object(background, 0)
 
-
     def draw(self):
-        self.image.draw_to_origin(self.x, 0, canvasSIZE[0],canvasSIZE[1])
+        self.image.draw_to_origin(self.x, 0, canvasSIZE[0], canvasSIZE[1])

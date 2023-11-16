@@ -3,11 +3,11 @@ from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1, SDLK_s
 
 import game_framework
 import game_world
-from global_variable import Booster_state, Magnet_state
+from booster_object import Booster_state
 
 from image_load import image_load
+from magnet_object import Magnet_state
 from point_object import point_object_level
-
 
 bottom = 100
 
@@ -76,8 +76,7 @@ class GameOver:
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw((int(player.frame) * 175) + int(player.frame) * 5, player.action * 150, 175, 150,
-                               player.x, player.y)
+        player.image.clip_draw((int(player.frame) * 175) + int(player.frame) * 5, player.action * 150, 175, 150,player.x, player.y)
 
 
 class Landing:
@@ -275,6 +274,7 @@ class StateMachine:
     def draw(self):
         self.cur_state.draw(self.player)
 
+
 class Player:
     def __init__(self):
         self.x, self.y = 300, bottom
@@ -310,7 +310,6 @@ class Player:
         if self.skill_time != False and get_time() - self.skill_time >= 10:
             self.skill_time = False
 
-
     def handle_event(self, event):
         if game_world.game_speed <= 0.0: return
         if self.skill_time == False and event.key == SDLK_s:
@@ -327,11 +326,12 @@ class Player:
     def G_force(self):
         if game_world.game_speed <= 0.0: return
         h = (self.jumpTime * self.jumpTime * (-self.Graity) / 2) + (self.jumpTime * self.jumpPower)
-        self.jumpTime = self.jumpTime + PLAYER_SPEED_PPS * game_framework.frame_time * max(1.0, Booster_state.return_booster_speed() / 2)
+        self.jumpTime = self.jumpTime + PLAYER_SPEED_PPS * game_framework.frame_time * max(1.0,Booster_state.return_booster_speed() / 2)
         return h
 
     def get_hit_box(self):
         return self.x - 35, self.y - 60, self.x + 35, self.y + 45
+
     def get_magnet_hit_box(self):
         pos = Magnet_state.return_magnet_pos()
         draw_in_size = 300
@@ -352,6 +352,3 @@ class Player:
         if group == 'player:magnet_object':
             Magnet_state.magnet_change(get_time())
             Magnet_state.update_magnet_pos(self.x, self.y)
-
-
-

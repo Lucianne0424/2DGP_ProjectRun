@@ -2,11 +2,12 @@ from pico2d import draw_rectangle
 
 import game_framework
 import game_world
+from booster_object import Booster_state
 
 from game_world import canvasSIZE, remove_object
-from global_variable import OBJECT_SPEED_PPS, Booster_state, Magnet_state
+from global_variable import OBJECT_SPEED_PPS
 from image_load import image_load
-
+from magnet_object import Magnet_state
 
 
 class CoinObject:

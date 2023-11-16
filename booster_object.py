@@ -4,8 +4,29 @@ import game_framework
 import game_world
 
 from game_world import canvasSIZE, remove_object
-from global_variable import OBJECT_SPEED_PPS, Booster_state, Magnet_state
+from global_variable import OBJECT_SPEED_PPS
 from image_load import image_load
+from magnet_object import Magnet_state
+
+booster_time = False
+booster_speed = 1.0
+
+
+class Booster_state:
+    @staticmethod
+    def booster_change(time, speed):
+        global booster_time
+        global booster_speed
+        booster_time = time
+        booster_speed = speed
+
+    @staticmethod
+    def return_booster_time():
+        return booster_time
+
+    @staticmethod
+    def return_booster_speed():
+        return booster_speed
 
 
 class BoosterObject:

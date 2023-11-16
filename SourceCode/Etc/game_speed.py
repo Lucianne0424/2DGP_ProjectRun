@@ -41,8 +41,9 @@ class Game_Speed:
                 print(pauseTime)
             return False
         else:
-            Game_Speed.sustainment_time_update(Game_Speed.get_pause_time())
-            pauseTime = False
+            if pauseTime != False:
+                Game_Speed.sustainment_time_update(Game_Speed.get_pause_time())
+                pauseTime = False
             return True
 
     @staticmethod

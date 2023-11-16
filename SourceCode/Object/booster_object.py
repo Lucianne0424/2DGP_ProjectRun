@@ -1,4 +1,4 @@
-from pico2d import draw_rectangle
+from pico2d import draw_rectangle, get_time
 
 from SourceCode.Etc import game_speed
 from SourceCode.Etc.game_world import remove_object
@@ -6,25 +6,29 @@ from SourceCode.Etc.global_variable import canvasSIZE
 from SourceCode.Etc.image_load import image_load
 from SourceCode.Object.magnet_object import Magnet_state
 
-booster_time = False
-booster_speed = 0.0
-
 
 class Booster_state:
+    booster_time = False
+    booster_cooldown = 5.0
+    booster_speed = 0.0
+
+    @staticmethod
+    def update(speed):
+        if get_time() - Booster_state.return_booster_time() >= Booster_state.booster_cooldown and Booster_state.return_booster_time() != False:
+            Booster_state.booster_change(False, speed)
+
     @staticmethod
     def booster_change(time, speed):
-        global booster_time
-        global booster_speed
-        booster_time = time
-        booster_speed = speed
+        Booster_state.booster_time = time
+        Booster_state.booster_speed = speed
 
     @staticmethod
     def return_booster_time():
-        return booster_time
+        return Booster_state.booster_time
 
     @staticmethod
     def return_booster_speed():
-        return booster_speed
+        return Booster_state.booster_speed
 
 
 class BoosterObject:

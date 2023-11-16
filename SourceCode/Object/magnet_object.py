@@ -1,41 +1,47 @@
-from pico2d import draw_rectangle
+from pico2d import draw_rectangle, get_time
 
 from SourceCode.Etc import game_speed
 from SourceCode.Etc.game_world import remove_object
 from SourceCode.Etc.global_variable import canvasSIZE
 from SourceCode.Etc.image_load import image_load
 
-magnet_time = False
-magnet_pos = []
-magnet_range_size = 300
-
 
 class Magnet_state:
+    magnet_time = False
+    magnet_cooldown = 5.0
+    magnet_pos = []
+    magnet_range_size = 300
+
+    @staticmethod
+    def update(x, y):
+        if Magnet_state.return_magnet_time() != False:
+            Magnet_state.update_magnet_pos(x, y)
+            if get_time() - Magnet_state.return_magnet_time() >= Magnet_state.magnet_cooldown:
+                Magnet_state.magnet_change(False)
+
 
     @staticmethod
     def magnet_change(time):
-        global magnet_time
-        magnet_time = time
+        Magnet_state.magnet_time = time
 
     @staticmethod
     def return_magnet_time():
-        return magnet_time
+        return Magnet_state.magnet_time
 
     @staticmethod
     def return_magnet_pos():
-        return magnet_pos
+        return Magnet_state.magnet_pos
 
     @staticmethod
     def update_magnet_pos(x, y):
-        global magnet_pos
-        magnet_pos = [x, y]
+        Magnet_state.magnet_pos = [x, y]
 
     @staticmethod
     def magnet_draw_in(x, y):
         if Magnet_state.return_magnet_time() == False: return False
 
         pos1 = Magnet_state.return_magnet_pos()
-        if pos1[0] - magnet_range_size <= x and pos1[0] + magnet_range_size >= x and pos1[1] - magnet_range_size <= y and pos1[1] + magnet_range_size >= y:
+        if pos1[0] - Magnet_state.magnet_range_size <= x and pos1[0] + Magnet_state.magnet_range_size >= x and pos1[1] - Magnet_state.magnet_range_size <= y and pos1[1] + Magnet_state.magnet_range_size >= y:
             if pos1[0] > x:
                 t = 0.1
             else:

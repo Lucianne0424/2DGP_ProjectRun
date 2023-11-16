@@ -52,7 +52,7 @@ class Game_Speed:
 
     @staticmethod
     def sustainment_time_update(add_time):
-        if booster_object.booster_time != False:
-            booster_object.booster_time += add_time
-        if magnet_object.magnet_time != False:
-            magnet_object.magnet_time += add_time
+        if booster_object.Booster_state.booster_time != False:
+            booster_object.Booster_state.booster_time += add_time
+        if magnet_object.Magnet_state.magnet_time != False:
+            magnet_object.Magnet_state.magnet_time += add_time

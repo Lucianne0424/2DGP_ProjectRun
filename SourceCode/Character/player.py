@@ -290,13 +290,8 @@ class Player:
     def update(self):
         self.Hp = self.Hp - 1.0 * game_framework.frame_time
         self.state_machine.update()
-        if get_time() - Booster_state.return_booster_time() >= 5 and Booster_state.return_booster_time() != False:
-            Booster_state.booster_change(False, 0.0)
-
-        if Magnet_state.return_magnet_time() != False:
-            Magnet_state.update_magnet_pos(self.x, self.y)
-            if get_time() - Magnet_state.return_magnet_time() >= 5:
-                Magnet_state.magnet_change(False)
+        Booster_state.update(0.0)
+        Magnet_state.update(self.x, self.y)
         if self.skill_time != False and get_time() - self.skill_time >= 10:
             self.skill_time = False
 

@@ -334,7 +334,7 @@ class Player:
             print("coin : ", self.coin)
 
         if group == 'player:booster_object':
-            if Booster_state.return_booster_time() == False:
+            if self.skill_time == False:
                 Booster_state.booster_change(get_time(), 3.0)
 
         if group == 'player:magnet_object':

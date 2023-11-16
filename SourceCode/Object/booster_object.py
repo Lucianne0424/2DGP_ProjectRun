@@ -7,7 +7,7 @@ from SourceCode.Etc.image_load import image_load
 from SourceCode.Object.magnet_object import Magnet_state
 
 booster_time = False
-booster_speed = 1.0
+booster_speed = 0.0
 
 
 class Booster_state:

@@ -28,4 +28,4 @@ speed = 1.0
 class Game_Speed:
     @staticmethod
     def return_spped(PPS):
-        return (PPS * game_framework.frame_time) * speed * booster_object.Booster_state.return_booster_speed()
+        return (PPS * game_framework.frame_time) * (speed + booster_object.Booster_state.return_booster_speed())

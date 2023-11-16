@@ -82,7 +82,7 @@ class Landing:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 4 * game_speed.ACTION_PER_TIME * game_framework.frame_time * Booster_state.return_booster_speed()) % 4
+        player.frame = (player.frame + 4 * game_speed.Game_Speed.return_spped(game_speed.ACTION_PER_TIME)) % 4
 
         if player.frame >= 3:
             player.state_machine.handle_event(('END_ACTION', 0))
@@ -104,7 +104,7 @@ class DoubleJumpFall:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 4 * game_speed.ACTION_PER_TIME * game_framework.frame_time * Booster_state.return_booster_speed()) % 4
+        player.frame = (player.frame + 4 * game_speed.Game_Speed.return_spped(game_speed.ACTION_PER_TIME)) % 4
 
         player.y = player.startY + player.G_force()
         if player.y <= bottom:
@@ -131,7 +131,7 @@ class DoubleJumpStart:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 8 * game_speed.ACTION_PER_TIME * game_framework.frame_time * Booster_state.return_booster_speed()) % 8
+        player.frame = (player.frame + 8 * game_speed.Game_Speed.return_spped(game_speed.ACTION_PER_TIME)) % 8
         player.y = player.startY + player.G_force()
 
         if player.frame >= 7:
@@ -154,7 +154,7 @@ class JumpFall:
 
     @staticmethod
     def do(player):
-        player.frame = min((player.frame + 5 * game_speed.ACTION_PER_TIME * game_framework.frame_time * Booster_state.return_booster_speed()), 5)
+        player.frame = min((player.frame + 5 * game_speed.Game_Speed.return_spped(game_speed.ACTION_PER_TIME)), 5)
         player.y = bottom + player.G_force()
         if player.y <= bottom:
             player.y = bottom
@@ -178,7 +178,7 @@ class JumpUp:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 2 * game_speed.ACTION_PER_TIME * game_framework.frame_time * Booster_state.return_booster_speed()) % 2
+        player.frame = (player.frame + 2 * game_speed.Game_Speed.return_spped(game_speed.ACTION_PER_TIME)) % 2
         player.y = bottom + player.G_force()
         if player.frame >= 1:
             player.state_machine.handle_event(('END_ACTION', 0))
@@ -201,7 +201,7 @@ class JumpStart:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 4 * game_speed.ACTION_PER_TIME * game_framework.frame_time * Booster_state.return_booster_speed()) % 4
+        player.frame = (player.frame + 4 * game_speed.Game_Speed.return_spped(game_speed.ACTION_PER_TIME)) % 4
         player.y = bottom + player.G_force()
         if player.frame >= 3:
             player.state_machine.handle_event(('END_ACTION', 0))
@@ -223,7 +223,7 @@ class Run:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 10 * game_speed.ACTION_PER_TIME * game_framework.frame_time * Booster_state.return_booster_speed()) % 10
+        player.frame = (player.frame + 10 * game_speed.Game_Speed.return_spped(game_speed.ACTION_PER_TIME)) % 10
         player.state_machine.handle_event(('GameOver', player.Hp))
 
     @staticmethod
@@ -292,7 +292,7 @@ class Player:
         self.Hp = self.Hp - 1.0 * game_framework.frame_time
         self.state_machine.update()
         if get_time() - Booster_state.return_booster_time() >= 5 and Booster_state.return_booster_time() != False:
-            Booster_state.booster_change(False, 1.0)
+            Booster_state.booster_change(False, 0.0)
 
         if Magnet_state.return_magnet_time() != False:
             Magnet_state.update_magnet_pos(self.x, self.y)

@@ -37,7 +37,7 @@ def object_add():  # 일정 간격으로 오브젝트 생성
     global object_gap_count
     global object_load_count
     object_gap_count = (object_gap_count + 1.0 * game_framework.frame_time)
-    if object_gap_count >= (0.2 / game_speed.speed / booster_object.Booster_state.return_booster_speed()):  # 1초에 점수 오브젝트 5개 생성
+    if object_gap_count >= (0.2 / (game_speed.speed + booster_object.Booster_state.return_booster_speed())):  # 1초에 점수 오브젝트 5개 생성
         object_gap_count = 0
 
         if object_information[object_load_count][0] == 1:

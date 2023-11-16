@@ -1,10 +1,9 @@
 from pico2d import draw_rectangle
 
-import game_framework
-import game_world
+import game_speed
 
-from game_world import canvasSIZE, remove_object
-from global_variable import OBJECT_SPEED_PPS
+from game_world import remove_object
+from global_variable import canvasSIZE
 from image_load import image_load
 from magnet_object import Magnet_state
 
@@ -39,7 +38,7 @@ class BoosterObject:
             BoosterObject.image = image_load('.//img//item', "Booster.png")
 
     def update(self):
-        self.x -= (OBJECT_SPEED_PPS * game_framework.frame_time) * game_world.game_speed * Booster_state.return_booster_speed()
+        self.x -= game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS)
         if self.x <= 0 - 30:
             remove_object(self)
         self.x, self.y = Magnet_state.magnet_checking(self.x, self.y)
@@ -53,4 +52,4 @@ class BoosterObject:
 
     def handle_collision(self, group, other):
         if group == 'player:booster_object':
-            game_world.remove_object(self)
+            remove_object(self)

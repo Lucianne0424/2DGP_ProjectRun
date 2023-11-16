@@ -1,5 +1,6 @@
 import booster_object
 import game_framework
+import game_speed
 import game_world
 
 import coin_object
@@ -20,7 +21,7 @@ stage1_object_pos_y = [
     (1, 1), (1, 1), (1, 1), (1, 2), (1, 3), (1, 4), (2, 5), (1, 4), (1, 3),
     (1, 2), (1, 1), (1, 1), (1, 1), (1, 2), (2, 3), (1, 2), (1, 1), (1, 1),
     (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1),
-]  # 오브젝트가 생성 할 값들의 정보 ( stage1_object_pos_y[][i] i가 0이면 어떤 오브젝트인지, 1은 오브젝트의 높이를 뜻함.
+]  # 오브젝트가 생성 할 값들의 정보 ( stage1_object_pos_y[][i] i가 0이면 어떤 오브젝트인지, 1은 오브젝트의 높이를 뜻함. 나중에는 파일 로드로 변경 예정
 
 object_information = []
 
@@ -38,12 +39,11 @@ object_load_count = 0  # 오브젝트의 배치 정보를 저장한 리스트의
 
 
 def object_add():  # 일정 간격으로 오브젝트 생성
-    if game_world.game_speed <= 0.0: return
+    if game_speed.speed <= 0.0: return
     global object_gap_count
     global object_load_count
     object_gap_count = (object_gap_count + 1.0 * game_framework.frame_time)
-    if object_gap_count >= (
-            0.2 / game_world.game_speed / booster_object.Booster_state.return_booster_speed()):  # 1초에 점수 오브젝트 5개 생성
+    if object_gap_count >= (0.2 / game_speed.speed / booster_object.Booster_state.return_booster_speed()):  # 1초에 점수 오브젝트 5개 생성
         object_gap_count = 0
 
         if object_information[object_load_count][0] == 1:

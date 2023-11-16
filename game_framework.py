@@ -2,6 +2,7 @@ import time
 
 running = None
 stack = None
+frame_time = None
 
 
 def change_mode(mode):

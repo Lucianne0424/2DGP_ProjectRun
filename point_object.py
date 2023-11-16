@@ -1,10 +1,10 @@
 from pico2d import draw_rectangle
 
-import game_framework
+
+import game_speed
 import game_world
-import global_variable
-from booster_object import Booster_state
-from game_world import canvasSIZE, remove_object
+from global_variable import canvasSIZE
+
 from image_load import image_load
 from magnet_object import Magnet_state
 
@@ -30,9 +30,9 @@ class PointObject:
             PointObject.level = point_object_level
 
     def update(self):
-        self.x -= (global_variable.OBJECT_SPEED_PPS * game_framework.frame_time) * game_world.game_speed * Booster_state.return_booster_speed()
+        self.x -= game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS)
         if self.x <= 0 - 30:
-            remove_object(self)
+            game_world.remove_object(self)
         if point_object_level != PointObject.level:
             PointObject.image = image_load('.//img//Point', point_object_level_image_load())
             PointObject.level = point_object_level

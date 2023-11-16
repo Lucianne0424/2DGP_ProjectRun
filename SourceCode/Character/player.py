@@ -288,7 +288,6 @@ class Player:
         self.skill_time = False
 
     def update(self):
-        if game_speed.speed <= 0.0: return
         self.Hp = self.Hp - 1.0 * game_framework.frame_time
         self.state_machine.update()
         if get_time() - Booster_state.return_booster_time() >= 5 and Booster_state.return_booster_time() != False:
@@ -302,7 +301,6 @@ class Player:
             self.skill_time = False
 
     def handle_event(self, event):
-        if game_speed.speed <= 0.0: return
         if self.skill_time == False and event.key == SDLK_s:
             Booster_state.booster_change(get_time(), 5.0)
             self.skill_time = get_time()
@@ -315,7 +313,6 @@ class Player:
             draw_rectangle(*self.get_magnet_hit_box())
 
     def G_force(self):
-        if game_speed.speed <= 0.0: return
         h = (self.jumpTime * self.jumpTime * (-self.Graity) / 2) + (self.jumpTime * self.jumpPower)
         self.jumpTime = self.jumpTime + game_speed.PLAYER_SPEED_PPS * game_framework.frame_time * max(1.0,Booster_state.return_booster_speed() / 2)
         return h

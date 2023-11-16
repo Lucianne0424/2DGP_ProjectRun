@@ -33,7 +33,6 @@ object_load_count = 0  # 오브젝트의 배치 정보를 저장한 리스트의
 
 
 def object_add():  # 일정 간격으로 오브젝트 생성
-    if game_speed.speed <= 0.0: return
     global object_gap_count
     global object_load_count
     object_gap_count = (object_gap_count + 1.0 * game_framework.frame_time)

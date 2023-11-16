@@ -1,6 +1,8 @@
 # 미터당 몇 픽셀인지
+from pico2d import get_time
+
 from SourceCode.Etc import game_framework
-from SourceCode.Object import booster_object
+from SourceCode.Object import booster_object, magnet_object
 
 # 픽셀당 미터 계산
 PIXEL_PER_METER = (10.0 / 0.3)
@@ -23,9 +25,33 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 
 # 게임 속도
 speed = 1.0
-
+pauseTime = False
 
 class Game_Speed:
     @staticmethod
     def return_spped(PPS):
         return (PPS * game_framework.frame_time) * (speed + booster_object.Booster_state.return_booster_speed())
+
+    @staticmethod
+    def pauseGame():
+        if speed <= 0.0:
+            global pauseTime
+            if pauseTime == False:
+                pauseTime = get_time()
+                print(pauseTime)
+            return False
+        else:
+            Game_Speed.sustainment_time_update(Game_Speed.get_pause_time())
+            pauseTime = False
+            return True
+
+    @staticmethod
+    def get_pause_time():
+        return get_time() - pauseTime
+
+    @staticmethod
+    def sustainment_time_update(add_time):
+        if booster_object.booster_time != False:
+            booster_object.booster_time += add_time
+        if magnet_object.magnet_time != False:
+            magnet_object.magnet_time += add_time

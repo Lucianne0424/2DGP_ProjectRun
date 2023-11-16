@@ -49,6 +49,7 @@ def init():
 
 
 def update():
+    if game_speed.Game_Speed.pauseGame() == False: return
     game_world.updata()
     object_add()
     game_world.handle_collisions()

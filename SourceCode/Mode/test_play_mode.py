@@ -1,6 +1,6 @@
 from pico2d import *
 
-from SourceCode.Character.player import Player
+from SourceCode.Character.girl_character import Girl_Character
 from SourceCode.Etc import game_framework, game_speed, game_world
 from SourceCode.Etc.global_variable import canvasSIZE
 from SourceCode.Object import point_object
@@ -34,7 +34,7 @@ def handle_events():
 def init():
     global player
 
-    player = Player()
+    player = Girl_Character()
     game_world.add_object(player, 1)
 
     game_world.add_collision_pair('player:point_object', player, None)

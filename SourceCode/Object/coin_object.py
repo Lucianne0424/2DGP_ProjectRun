@@ -1,9 +1,8 @@
-from pico2d import draw_rectangle
+from pico2d import draw_rectangle, load_image
 
 from SourceCode.Etc import game_speed
 from SourceCode.Etc.game_world import remove_object
 from SourceCode.Etc.global_variable import canvasSIZE
-from SourceCode.Etc.image_load import image_load
 from SourceCode.Object.magnet_object import Magnet_state
 
 
@@ -14,7 +13,7 @@ class CoinObject:
         self.x = canvasSIZE[0] + 30
         self.y = y
         if CoinObject.image == None:
-            CoinObject.image = image_load('.//img//Coin', "Coin.png")
+            CoinObject.image = load_image('.//img//Coin//Coin.png')
 
     def update(self):
         self.x -= game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS)

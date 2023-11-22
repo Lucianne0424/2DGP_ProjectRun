@@ -1,5 +1,6 @@
+from pico2d import load_image
+
 from SourceCode.Etc import game_world, game_speed, global_variable
-from SourceCode.Etc.image_load import image_load
 
 
 def add_back_ground():
@@ -15,7 +16,7 @@ class BackGround:
     def __init__(self, x):
         self.x = x
         if BackGround.image == None:
-            BackGround.image = image_load('.//img//BackGround', 'testBG.png')
+            BackGround.image = load_image('.//img//BackGround//testBG.png')
 
     def update(self):
         self.x -= game_speed.Game_Speed.return_spped(game_speed.BACKGROUND_SPEED_PPS)

@@ -1,15 +1,14 @@
-from pico2d import get_events, clear_canvas, update_canvas
+from pico2d import get_events, clear_canvas, update_canvas, load_image
 from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE
 
 from SourceCode.Etc import game_framework
 from SourceCode.Etc.global_variable import canvasSIZE
-from SourceCode.Etc.image_load import image_load
 from SourceCode.Mode import test_play_mode
 
 
 def init():
     global image
-    image = image_load('img/Title', 'title.png')
+    image = load_image('img/Title//title.png')
 
 
 def finish():

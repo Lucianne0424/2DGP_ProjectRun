@@ -1,15 +1,15 @@
-from pico2d import draw_rectangle
+from pico2d import draw_rectangle, load_image
 
 from SourceCode.Etc import game_speed, game_world
 from SourceCode.Etc.global_variable import canvasSIZE
-from SourceCode.Etc.image_load import image_load
 from SourceCode.Object.magnet_object import Magnet_state
 
 point_object_level = 1  # 점수 오브젝트 레벨
 
 
 def point_object_level_image_load():
-    name = 'point_item_candy'
+    name = './/img//Point//'
+    name += 'point_item_candy'
     name += str(point_object_level)
     name += '.png'
     return name
@@ -23,7 +23,7 @@ class PointObject:
         self.x = canvasSIZE[0] + 30
         self.y = y
         if PointObject.image == None:
-            PointObject.image = image_load('.//img//Point', point_object_level_image_load())
+            PointObject.image = load_image(point_object_level_image_load())
             PointObject.level = point_object_level
 
     def update(self):

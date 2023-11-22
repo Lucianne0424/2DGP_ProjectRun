@@ -1,9 +1,8 @@
-from pico2d import draw_rectangle, get_time
+from pico2d import draw_rectangle, get_time, load_image
 
 from SourceCode.Etc import game_speed
 from SourceCode.Etc.game_world import remove_object
 from SourceCode.Etc.global_variable import canvasSIZE
-from SourceCode.Etc.image_load import image_load
 from SourceCode.Object.magnet_object import Magnet_state
 
 
@@ -38,7 +37,7 @@ class BoosterObject:
         self.x = canvasSIZE[0] + 30
         self.y = y
         if BoosterObject.image == None:
-            BoosterObject.image = image_load('.//img//item', "Booster.png")
+            BoosterObject.image = load_image('.//img//item//Booster.png')
 
     def update(self):
         self.x -= game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS)

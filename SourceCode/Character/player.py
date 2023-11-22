@@ -1,8 +1,7 @@
-from pico2d import draw_rectangle, get_time
+from pico2d import draw_rectangle, get_time, load_image
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1, SDLK_s
 
 from SourceCode.Etc import game_speed, game_framework
-from SourceCode.Etc.image_load import image_load
 from SourceCode.Object.booster_object import Booster_state
 from SourceCode.Object.magnet_object import Magnet_state
 from SourceCode.Object.point_object import point_object_level
@@ -281,7 +280,7 @@ class Player:
         self.score = 0
         self.coin = 0
 
-        self.image = image_load('.//img//Character', 'Girl_sheet.png')
+        self.image = load_image('.//img//Character//Girl_sheet.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 

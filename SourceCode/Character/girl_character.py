@@ -248,6 +248,7 @@ class Girl_Character:
 
         self.Graity = 0.398
         self.jumpPower = -1.0
+        self.jumpTime = 1.0
 
         self.score = 0
         self.coin = 0
@@ -283,8 +284,10 @@ class Girl_Character:
             draw_rectangle(*self.get_magnet_hit_box())
 
     def G_force(self):
-        y = self.jumpPower
-        self.jumpPower -= self.Graity * (game_speed.PLAYER_SPEED_PPS * game_framework.frame_time * max(1.0, Booster_state.return_booster_speed() / 2))
+        mul_speed = max(1.0, Booster_state.return_booster_speed() / 2)
+        y = self.jumpPower * mul_speed
+        self.jumpPower -= self.Graity * (game_speed.PLAYER_SPEED_PPS * game_framework.frame_time) * mul_speed
+
         return y
 
     def get_hit_box(self):

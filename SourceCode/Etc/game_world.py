@@ -1,6 +1,6 @@
 # 게임 월드 모듈
 
-objects = [[] for _ in range(3)]  # 레이어 구별
+objects = [[] for _ in range(5)]  # 레이어 구별
 # 충돌 그룹 정보를 dict로 표현
 collision_pairs = {}
 

@@ -23,6 +23,9 @@ def end_action(e):
 def game_over(e):
     return e[0] == 'GameOver' and e[1] <= 0.0
 
+def damage(e):
+    return e[0] == 'Damage'
+
 
 class Damage:
     @staticmethod
@@ -205,12 +208,12 @@ class StateMachine:
         self.player = player
         self.cur_state = Run
         self.transitions = {
-            Run: {space_down: JumpStart, game_over: GameOver, Key_down_1: Damage},
-            JumpStart: {end_action: JumpFall, space_down: DoubleJumpStart},
-            JumpFall: {end_action: Landing, space_down: DoubleJumpStart},
-            DoubleJumpStart: {end_action: DoubleJumpFall},
-            DoubleJumpFall: {end_action: Landing},
-            Landing: {end_action: Run, space_down: JumpStart},
+            Run: {space_down: JumpStart, game_over: GameOver, Key_down_1: Damage, damage: Damage},
+            JumpStart: {end_action: JumpFall, space_down: DoubleJumpStart, damage: Damage},
+            JumpFall: {end_action: Landing, space_down: DoubleJumpStart, damage: Damage},
+            DoubleJumpStart: {end_action: DoubleJumpFall, damage: Damage},
+            DoubleJumpFall: {end_action: Landing, damage: Damage},
+            Landing: {end_action: Run, space_down: JumpStart, damage: Damage},
 
             GameOver: {game_over: GameOver},
             Damage: {end_action: Run}
@@ -319,6 +322,10 @@ class Girl_Character:
             self.jumpPower = -1.0
             if self.state_machine.cur_state == JumpFall or self.state_machine.cur_state == DoubleJumpFall:
                 self.state_machine.handle_event(('END_ACTION', 0))
+
+        if group == 'player:hurdle_object':
+            if self.state_machine.cur_state != Damage:
+                self.state_machine.handle_event(('Damage', 0))
 
 
 

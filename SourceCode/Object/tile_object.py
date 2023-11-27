@@ -6,7 +6,6 @@ from SourceCode.Etc.game_world import remove_object
 
 class TileObject:
     image = []
-    test = None
     def __init__(self, index, x, y = -50):
         self.x = x
         self.y = y
@@ -19,6 +18,8 @@ class TileObject:
 
     def update(self):
         self.x -= game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS)
+        if self.x <= 0 - self.w:
+            remove_object(self)
 
 
     def draw(self):

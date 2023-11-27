@@ -31,7 +31,7 @@ class PointObject:
         if self.x <= 0 - 30:
             game_world.remove_object(self)
         if point_object_level != PointObject.level:
-            PointObject.image = image_load('.//img//Point', point_object_level_image_load())
+            PointObject.image = load_image(point_object_level_image_load())
             PointObject.level = point_object_level
         self.x, self.y = Magnet_state.magnet_checking(self.x, self.y)
 

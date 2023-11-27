@@ -264,6 +264,7 @@ class Girl_Character:
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
+        self.invincible_time = False
         self.skill_time = False
 
     def update(self):
@@ -273,6 +274,8 @@ class Girl_Character:
         Magnet_state.update(self.x, self.y)
         if self.skill_time != False and get_time() - self.skill_time >= 10:
             self.skill_time = False
+        if self.invincible_time != False and get_time() - self.invincible_time >= 2:
+            self.invincible_time = False
 
     def handle_event(self, event):
         if self.skill_time == False and event.key == SDLK_s:
@@ -324,7 +327,8 @@ class Girl_Character:
                 self.state_machine.handle_event(('END_ACTION', 0))
 
         if group == 'player:hurdle_object':
-            if self.state_machine.cur_state != Damage:
+            if self.invincible_time == False:
+                self.invincible_time = get_time()
                 self.state_machine.handle_event(('Damage', 0))
 
 

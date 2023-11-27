@@ -41,22 +41,22 @@ def object_add():  # 일정 간격으로 오브젝트 생성
 
         if object_information[object_load_count][0] == 1:
             object_create = point_object.PointObject(50 + object_information[object_load_count][1] * 50)
-            game_world.add_object(object_create, 2)
+            game_world.add_object(object_create, 4)
             game_world.add_collision_pair('player:point_object', None, object_create)
 
         elif object_information[object_load_count][0] == 2:
             object_create = coin_object.CoinObject(50 + object_information[object_load_count][1] * 50)
-            game_world.add_object(object_create, 2)
+            game_world.add_object(object_create, 4)
             game_world.add_collision_pair('player:coin_object', None, object_create)
 
         elif object_information[object_load_count][0] == 3:
             object_create = booster_object.BoosterObject(50 + object_information[object_load_count][1] * 50)
-            game_world.add_object(object_create, 2)
+            game_world.add_object(object_create, 4)
             game_world.add_collision_pair('player:booster_object', None, object_create)
 
         elif object_information[object_load_count][0] == 4:
             object_create = magnet_object.MagnetObject(50 + object_information[object_load_count][1] * 50)
-            game_world.add_object(object_create, 2)
+            game_world.add_object(object_create, 4)
             game_world.add_collision_pair('player:magnet_object', None, object_create)
 
         object_load_count = (object_load_count + 1) % object_information_len

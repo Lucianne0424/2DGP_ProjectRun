@@ -2,6 +2,7 @@ from pico2d import draw_rectangle, get_time, load_image
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1, SDLK_s
 
 from SourceCode.Etc import game_speed, game_framework
+from SourceCode.Etc.global_variable import hpLevel
 from SourceCode.Object.booster_object import Booster_state
 from SourceCode.Object.magnet_object import Magnet_state
 from SourceCode.Object.point_object import point_object_level
@@ -244,10 +245,9 @@ class Girl_Character:
 
     def __init__(self):
         self.x, self.y = 300, 100
-        self.Hp = 100.0
+        self.MaxHp = 100.0 + (hpLevel * 20)
+        self.Hp = self.MaxHp
         self.frame = 0
-        self.action = 0
-        self.count = 0
 
         self.Graity = 0.398
         self.jumpPower = -1.0
@@ -269,6 +269,7 @@ class Girl_Character:
 
     def update(self):
         self.Hp = self.Hp - 1.0 * game_framework.frame_time
+        print('Hp : ', self.Hp)
         self.state_machine.update()
         Booster_state.update(0.0)
         Magnet_state.update(self.x, self.y)
@@ -307,10 +308,9 @@ class Girl_Character:
     def handle_collision(self, group, other):
         if group == 'player:point_object':
             self.score += 10 * point_object_level
-            print("score : ", self.score)
+
         if group == 'player:coin_object':
             self.coin += 10
-            print("coin : ", self.coin)
 
         if group == 'player:booster_object':
             if self.skill_time == False:
@@ -327,9 +327,12 @@ class Girl_Character:
                 self.state_machine.handle_event(('END_ACTION', 0))
 
         if group == 'player:hurdle_object':
-            if self.invincible_time == False:
+            if self.invincible_time == False and not Booster_state.return_booster_time():
                 self.invincible_time = get_time()
                 self.state_machine.handle_event(('Damage', 0))
+
+        if group == 'player:healing_object':
+            self.Hp = min(self.MaxHp, self.Hp + 10)
 
 
 

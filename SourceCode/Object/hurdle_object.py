@@ -3,7 +3,7 @@ from pico2d import draw_rectangle, get_time, load_image
 from SourceCode.Etc import game_speed
 from SourceCode.Etc.game_world import remove_object
 from SourceCode.Etc.global_variable import canvasSIZE
-from SourceCode.Object.magnet_object import Magnet_state
+from SourceCode.Object.booster_object import Booster_state
 
 
 class HurdleObject:
@@ -21,14 +21,28 @@ class HurdleObject:
         self.w = HurdleObject.image[self.hurdleName][0].w
         self.h = HurdleObject.image[self.hurdleName][0].h
 
+        self.flying_togle = False
+        self.acceleration = 10.0
+        self.rotate = 0.0
+
 
     def update(self):
         self.x -= game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS)
         if self.x <= 0 - self.w:
             remove_object(self)
 
+        if self.flying_togle:
+            self.x -= game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS) * 2
+            self.y += game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS) * self.acceleration
+            deceleration = self.acceleration - game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS) * 0.05
+            self.acceleration = max(deceleration, 1.0)
+
     def draw(self):
-        self.image[self.hurdleName][0].draw(self.x, self.y)
+        if self.flying_togle:
+            self.image[self.hurdleName][0].rotate_draw(self.rotate, self.x, self.y)
+            self.rotate += 1.0
+        else:
+            self.image[self.hurdleName][0].draw(self.x, self.y)
         draw_rectangle(*self.get_hit_box())
 
     def get_hit_box(self):
@@ -36,4 +50,5 @@ class HurdleObject:
 
     def handle_collision(self, group, other):
         if group == 'player:hurdle_object':
-            pass
+            if Booster_state.return_booster_time():
+                self.flying_togle = True

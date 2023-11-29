@@ -330,6 +330,9 @@ class Girl_Character:
             if self.invincible_time == False and not Booster_state.return_booster_time():
                 self.invincible_time = get_time()
                 self.state_machine.handle_event(('Damage', 0))
+            elif Booster_state.return_booster_time():
+                self.score += 50
+
 
         if group == 'player:healing_object':
             self.Hp = min(self.MaxHp, self.Hp + 10)

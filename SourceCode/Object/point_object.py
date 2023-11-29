@@ -19,9 +19,9 @@ class PointObject:
     image = None
     level = 0  # point_object_level과 level의 값이 다르면 이미지를 새롭게 로드한다.
 
-    def __init__(self, y=1):
-        self.x = canvasSIZE[0] + 30
-        self.y = y
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+
         if PointObject.image == None:
             PointObject.image = load_image(point_object_level_image_load())
             PointObject.level = point_object_level

@@ -7,9 +7,8 @@ from SourceCode.Etc.game_world import remove_object
 class TileObject:
     image = []
     def __init__(self, index, x, y = -50):
-        self.x = x
-        self.y = y
-        self.index = index
+        self.index, self.x, self.y = index, x, y
+
         if not TileObject.image:
             for i in range(4):
                 TileObject.image.append(load_image('.//img//Tile//stage_1//Stage_1_bottom_tile_' + str(i) + '.png'))

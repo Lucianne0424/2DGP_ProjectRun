@@ -7,7 +7,7 @@ from SourceCode.Object import point_object
 from SourceCode.Object.hurdle_object import HurdleObject
 from SourceCode.Object.tile_object import TileObject
 from SourceCode.Stage.background import BackGround
-from SourceCode.Stage.object_information import setting_stage, object_add
+from SourceCode.Stage.create_object import setting_stage, object_create
 
 
 def handle_events():
@@ -33,12 +33,8 @@ def handle_events():
             player.handle_event(event)
 
 
-def init():
+def collision_pair_setting():
     global player
-
-    player = Girl_Character()
-    game_world.add_object(player, 3)
-
     game_world.add_collision_pair('player:point_object', player, None)
     game_world.add_collision_pair('player:coin_object', player, None)
     game_world.add_collision_pair('player:booster_object', player, None)
@@ -46,6 +42,13 @@ def init():
     game_world.add_collision_pair('player:tile_object', player, None)
     game_world.add_collision_pair('player:hurdle_object', player, None)
     game_world.add_collision_pair('player:healing_object', player, None)
+
+def init():
+    global player
+
+    player = Girl_Character()
+    game_world.add_object(player, 3)
+    collision_pair_setting()
 
     game_world.add_object(BackGround(0), 0)
     game_world.add_object(BackGround(canvasSIZE[0]), 0)
@@ -59,7 +62,7 @@ def init():
         game_world.add_collision_pair('player:tile_object', None, tile_object[i])
 
     # 테스트 장애물 출력
-    hurdle = HurdleObject('Ghost')
+    hurdle = HurdleObject('Ghost', 1000, 100)
     game_world.add_object(hurdle, 2)
     game_world.add_collision_pair('player:hurdle_object', None, hurdle)
 
@@ -69,7 +72,7 @@ def init():
 def update():
     if game_speed.Game_Speed.pauseGame() == False: return
     game_world.updata()
-    object_add()
+    object_create()
     game_world.handle_collisions()
 
 

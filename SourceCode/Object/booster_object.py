@@ -33,9 +33,9 @@ class Booster_state:
 class BoosterObject:
     image = None
 
-    def __init__(self, y=1):
-        self.x = canvasSIZE[0] + 30
-        self.y = y
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+
         if BoosterObject.image == None:
             BoosterObject.image = load_image('.//img//item//Booster.png')
 

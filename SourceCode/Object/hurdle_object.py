@@ -9,9 +9,8 @@ from SourceCode.Object.booster_object import Booster_state
 class HurdleObject:
     Hurdle_names = [('Ghost', 14)]
     image = {}
-    def __init__(self, hurdleName, y=100):
-        self.x = canvasSIZE[0] + 30
-        self.y = y
+    def __init__(self, hurdleName, x, y):
+        self.x, self.y = x, y
         self.hurdleName = hurdleName
 
         if not HurdleObject.image:

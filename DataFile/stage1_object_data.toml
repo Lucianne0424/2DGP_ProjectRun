@@ -1,0 +1,7 @@
+objects = [
+    {type= 'Point', x= 100, y=100},
+    {type= 'Coin', x= 200, y=100},
+    {type= 'Booster', x= 300, y=100},
+    {type= 'Magnet', x= 400, y=100},
+    {type= 'Healing', x= 500, y=100},
+]

@@ -9,9 +9,9 @@ from SourceCode.Object.magnet_object import Magnet_state
 class CoinObject:
     image = None
 
-    def __init__(self, y=1):
-        self.x = canvasSIZE[0] + 30
-        self.y = y
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+
         if CoinObject.image == None:
             CoinObject.image = load_image('.//img//Coin//Coin.png')
 

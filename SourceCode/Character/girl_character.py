@@ -313,7 +313,7 @@ class Girl_Character:
             self.coin += 10
 
         if group == 'player:booster_object':
-            if self.skill_time == False:
+            if self.skill_time == False or not Booster_state.return_booster_time():
                 Booster_state.booster_change(get_time(), 3.0)
 
         if group == 'player:magnet_object':

@@ -305,7 +305,7 @@ class Girl_Character:
         return y
 
     def get_hit_box(self):
-        return self.x - 35, self.y - 60, self.x + 35, self.y + 45
+        return self.x - 10, self.y - 60, self.x + 15, self.y + 45
 
     def get_magnet_hit_box(self):
         pos = Magnet_state.return_magnet_pos()

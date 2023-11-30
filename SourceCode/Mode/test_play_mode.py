@@ -53,19 +53,6 @@ def init():
     game_world.add_object(BackGround(0), 0)
     game_world.add_object(BackGround(canvasSIZE[0]), 0)
 
-    # 테스트 타일 출력
-    tile_object = [TileObject(0, 0)]
-    game_world.add_object(tile_object[0], 1)
-    for i in range(1, 100):
-        tile_object.append(TileObject(i % 4, tile_object[i-1].w + tile_object[i-1].x))
-        game_world.add_object(tile_object[i], 1)
-        game_world.add_collision_pair('player:tile_object', None, tile_object[i])
-
-    # 테스트 장애물 출력
-    hurdle = HurdleObject('Ghost', 1000, 100)
-    game_world.add_object(hurdle, 2)
-    game_world.add_collision_pair('player:hurdle_object', None, hurdle)
-
     setting_stage()
 
 

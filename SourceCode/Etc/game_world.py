@@ -86,3 +86,15 @@ def handle_collisions():
                 if collide(a, b):
                     a.handle_collision(group, b)
                     b.handle_collision(group, a)
+
+
+def mounse_collide(a, x, y):
+    la, ba, ra, ta = a.get_hit_box()
+    lb, bb, rb, tb = x - 5, y - 5, x + 5,  y + 5
+
+    if la > rb: return False
+    if ra < lb: return False
+    if ta < bb: return False
+    if ba > tb: return False
+
+    return True

@@ -1,9 +1,9 @@
 from pico2d import get_events, clear_canvas, update_canvas, load_image
-from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE
+from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE, SDLK_e
 
 from SourceCode.Etc import game_framework
 from SourceCode.Etc.global_variable import canvasSIZE
-from SourceCode.Mode import test_play_mode
+from SourceCode.Mode import test_play_mode, editor_mode
 
 
 def init():
@@ -24,6 +24,8 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
             game_framework.change_mode(test_play_mode)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_e:
+            game_framework.change_mode(editor_mode)
 
 
 def update():

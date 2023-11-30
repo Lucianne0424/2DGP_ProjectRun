@@ -7,7 +7,8 @@ from SourceCode.Object.booster_object import Booster_state
 from SourceCode.Object.magnet_object import Magnet_state
 from SourceCode.Object.point_object import point_object_level
 
-jumpPower = 2.0
+jumpAcceleration = 2.0
+jumpPower = 30
 
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
@@ -117,9 +118,9 @@ class DoubleJumpStart:
     @staticmethod
     def entrance(player, event):
         player.action = 'Double_Jump_Start'
-        player.frame = 2
+        player.frame = 0
         player.count = 0
-        player.jumpPower = jumpPower
+        player.jumpAcceleration = jumpAcceleration
 
 
     @staticmethod
@@ -128,11 +129,13 @@ class DoubleJumpStart:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 8 * game_speed.Game_Speed.return_spped(game_speed.ACTION_PER_TIME)) % 8
-        player.y += player.G_force()
+        player.frame = min(6, (player.frame + 6 * game_speed.Game_Speed.return_spped(game_speed.ACTION_PER_TIME)))
 
-        if player.frame >= 7:
+        force = player.G_force()
+        if force <= 0:
             player.state_machine.handle_event(('END_ACTION', 0))
+        else:
+            player.y += force
 
     @staticmethod
     def draw(player):
@@ -164,7 +167,7 @@ class JumpStart:
     def entrance(player, event):
         player.action = 'Jump_Start'
         player.frame = 0
-        player.jumpPower = jumpPower
+        player.jumpAcceleration = jumpAcceleration
 
 
     @staticmethod
@@ -173,10 +176,13 @@ class JumpStart:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 7 * game_speed.Game_Speed.return_spped(game_speed.ACTION_PER_TIME)) % 7
-        player.y += player.G_force()
-        if player.frame >= 6:
+        player.frame = min(5, (player.frame + 5 * game_speed.Game_Speed.return_spped(game_speed.ACTION_PER_TIME)))
+        force = player.G_force()
+
+        if force <= 0:
             player.state_machine.handle_event(('END_ACTION', 0))
+        else:
+            player.y += force
 
     @staticmethod
     def draw(player):
@@ -250,8 +256,9 @@ class Girl_Character:
         self.frame = 0
 
         self.Graity = 0.398
-        self.jumpPower = -1.0
-        self.jumpTime = 1.0
+        self.jumpAcceleration = -1.0
+
+
 
         self.score = 0
         self.coin = 0
@@ -291,10 +298,10 @@ class Girl_Character:
             draw_rectangle(*self.get_magnet_hit_box())
 
     def G_force(self):
-        mul_speed = max(1.0, Booster_state.return_booster_speed() / 2)
-        y = self.jumpPower * mul_speed
-        self.jumpPower -= self.Graity * (game_speed.PLAYER_SPEED_PPS * game_framework.frame_time) * mul_speed
+        mul_speed = max(1.0, Booster_state.return_booster_speed())
 
+        y = game_speed.Game_Speed.return_spped(game_speed.PLAYER_SPEED_PPS) * self.jumpAcceleration * jumpPower
+        self.jumpAcceleration -= self.Graity * game_speed.Game_Speed.return_spped(game_speed.PLAYER_SPEED_PPS)
         return y
 
     def get_hit_box(self):
@@ -321,8 +328,9 @@ class Girl_Character:
             Magnet_state.update_magnet_pos(self.x, self.y)
 
         if group == 'player:tile_object':
+            print(self.state_machine.cur_state)
             self.y = + 60 + other.y + other.h
-            self.jumpPower = -1.0
+            self.jumpAcceleration = -1.0
             if self.state_machine.cur_state == JumpFall or self.state_machine.cur_state == DoubleJumpFall:
                 self.state_machine.handle_event(('END_ACTION', 0))
 

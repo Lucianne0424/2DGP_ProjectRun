@@ -12,13 +12,17 @@ class TileObject:
         if not TileObject.image:
             for i in range(4):
                 TileObject.image.append(load_image('.//img//Tile//stage_1//Stage_1_bottom_tile_' + str(i) + '.png'))
+            for i in range(4):
+                TileObject.image.append(load_image('.//img//Tile//stage_1//Stage_1_top_tile_' + str(i) + '.png'))
+
         self.w = TileObject.image[self.index].w
         self.h = TileObject.image[self.index].h
 
     def update(self):
         self.x -= game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS)
-        if self.x <= 0 - self.w:
+        if self.x <= -300 - self.w:
             remove_object(self)
+
 
 
     def draw(self):

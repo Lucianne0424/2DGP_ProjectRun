@@ -31,6 +31,7 @@ class Booster_state:
 
 class BoosterObject:
     image = None
+    type = 'Booster'
 
     def __init__(self, x, y):
         self.x, self.y = x, y

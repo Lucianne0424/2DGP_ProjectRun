@@ -7,6 +7,7 @@ from SourceCode.Etc.game_world import remove_object
 class TileObject:
     image = []
     draw_size = [100, 40]
+    type = 'Tile'
 
     def __init__(self, index, x, y=-50):
         self.index, self.x, self.y = index, x, y

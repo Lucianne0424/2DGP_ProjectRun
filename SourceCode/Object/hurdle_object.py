@@ -8,6 +8,7 @@ from SourceCode.Object.booster_object import Booster_state
 class HurdleObject:
     Hurdle_names = [('Ghost', 14)]
     image = {}
+    type = 'Hurdle'
 
     def __init__(self, hurdleName, x, y):
         self.x, self.y = x, y

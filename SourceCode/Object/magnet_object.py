@@ -61,6 +61,7 @@ class Magnet_state:
 
 class MagnetObject:
     image = None
+    type = 'Magnet'
 
     def __init__(self, x, y):
         self.x, self.y = x, y

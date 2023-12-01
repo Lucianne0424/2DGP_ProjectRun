@@ -9,7 +9,7 @@ from SourceCode.Object import tile_object, hurdle_object, point_object, coin_obj
     healing_object
 
 MousePos_x, MousePos_y = 0, 0  # 마우스 위치
-Print_display_x = 0  # 초기 위치에서 얼만큼 움직였는지 ( 나중에 세이브를 위해 필요 )
+Print_display_x = -canvasSIZE[0] - 200  # 초기 위치에서 얼만큼 움직였는지 ( 나중에 세이브를 위해 필요 )
 display_speed = 50  # a, d키를 눌렀을 때, 화면이 움직이는 속도
 
 image = None  # 마우스 이미지
@@ -128,6 +128,11 @@ def init():
 
     mouse_img_load.object_type(object_type, object_num)
 
+    i = 0
+    while i < canvasSIZE[0]:
+        create_object(0, 2, i,0)
+        i += 100
+
 
 def finish():
     game_world.clear()
@@ -175,8 +180,9 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_l:
             print("불러오기 중 입니다.")
             game_world.objects = game_world.load_world(".//DataFile//editor_mode_object_data.pickle")
-            print(game_world.objects)
+            move_display(-Print_display_x)
             print("불러오기 완료")
+
 
         elif event.type == SDL_KEYDOWN and event.key == SDLK_LEFT:
             if object_type == 0 or object_type == 1:

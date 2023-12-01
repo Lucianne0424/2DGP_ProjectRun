@@ -7,6 +7,7 @@ from SourceCode.Object.magnet_object import Magnet_state
 
 class CoinObject:
     image = None
+    type = 'Coin'
 
     def __init__(self, x, y):
         self.x, self.y = x, y

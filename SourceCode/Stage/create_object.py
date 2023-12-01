@@ -1,22 +1,15 @@
-import tomllib
-
 from SourceCode.Etc import game_speed, game_world
 from SourceCode.Etc.game_speed import Game_Speed
-from SourceCode.Etc.global_variable import stage, canvasSIZE, depth
+from SourceCode.Etc.global_variable import canvasSIZE, depth
 from SourceCode.Object import booster_object, point_object, coin_object, magnet_object, healing_object, hurdle_object, \
     tile_object
 
-item_object_information = [] # toml에서 불러온 정보를 저장할 리스트
-item_object_information_len = 0 # object_information의 길이
+object_information = []  # .pickle에서 불러온 정보를 저장할 리스트
+object_len = {'Tile': 0, 'Hurdle': 0, 'Item': 0}  # object_information의 길이
 
-tile_object_information = []
-tile_object_information_len = 0
-
-hurdle_object_information = []
-hurdle_object_information_len = 0
-
-createLine_x = [0.0, 0.0, 0.0] # 읽어들인 데이터 파일과 좌표값을 비교하여 오브젝트 생성 ( 각각 아이템, 타일, 장애물 오브젝트 )
-object_load_count = [0, 0, 0] # 반복해서 생성하기 위한 변수 ( 각각 아이템, 타일, 장애물 오브젝트 )
+list = ['Tile', 'Hurdle', 'Item'] # 반복문 돌리기 위한 리스트
+createLine_x = {'Tile': 0, 'Hurdle': 0, 'Item': 0}  # 읽어들인 데이터 파일과 좌표값을 비교하여 오브젝트 생성
+object_load_count = {'Tile': 0, 'Hurdle': 0, 'Item': 0}  # 반복해서 생성하기 위한 변수
 
 item_type_dict = {
     'Point': (point_object.PointObject, 'player:point_object'),
@@ -28,20 +21,17 @@ item_type_dict = {
 
 
 def setting_stage():
-    global item_object_information, item_object_information_len
-    global tile_object_information, tile_object_information_len
+    global object_information
+    global object_len
 
-    with open('.//DataFile//stage' + str(stage) + '_item_object_data.toml', 'rb') as f:
-        item_object_information = tomllib.load(f)['item_objects']
-        item_object_information_len = len(item_object_information)
-
-    with open('.//DataFile//stage' + str(stage) + '_object_data.toml', 'rb') as f:
-        tile_object_information = tomllib.load(f)['tile_objects']
-        tile_object_information_len = len(tile_object_information)
+    object_information = game_world.load_world(".//DataFile//editor_mode_object_data.pickle")
+    object_len['Item'] = len(object_information[depth['Item']])
+    object_len['Tile'] = len(object_information[depth['Tile']])
+    object_len['Hurdle'] = len(object_information[depth['Hurdle']])
 
 
-def create_item_object(object_type, x):
-    ob_type, ob_x, ob_y = object_type['type'], object_type['x'], object_type['y']
+def create_item_object(object, x):
+    ob_type, ob_x, ob_y = object.type, object.x, object.y
 
     create_pos_x = canvasSIZE[0] + 50
     gap = ob_x - x
@@ -51,9 +41,8 @@ def create_item_object(object_type, x):
     game_world.add_collision_pair(item_type_dict[ob_type][1], None, object_create)
 
 
-def create_tile_object(object_type, x):
-    if object_type['type'] == 'None': return
-    ob_type, ob_x, ob_y = object_type['type'], object_type['x'], object_type['y']
+def create_tile_object(object, x):
+    ob_type, ob_x, ob_y = object.index, object.x, object.y
 
     create_pos_x = canvasSIZE[0] + 50
     gap = ob_x - x
@@ -63,22 +52,31 @@ def create_tile_object(object_type, x):
     game_world.add_collision_pair('player:tile_object', None, object_create)
 
 
+def create_hurdle_object(object, x):
+    ob_type, ob_x, ob_y = object.hurdleName, object.x, object.y
+
+    create_pos_x = canvasSIZE[0] + 50
+    gap = ob_x - x
+
+    object_create = hurdle_object.HurdleObject(ob_type, create_pos_x + gap, ob_y)
+    game_world.add_object(object_create, depth['Hurdle'])
+    game_world.add_collision_pair('player:hurdle_object', None, object_create)
+
+
+fnc = {'Tile': create_tile_object, 'Hurdle': create_hurdle_object, 'Item': create_item_object}
+
 
 def object_create():
     global createLine_x
     global object_load_count
 
     speed = Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS)
-    for i in range(3):
+    for i in list:
         createLine_x[i] += speed
 
-    object_type = item_object_information[object_load_count[0]]
-    if object_type['x'] <= createLine_x[0]:
-        create_item_object(object_type, createLine_x[0])
-        object_load_count[0] = (object_load_count[0] + 1) % item_object_information_len
-        if object_load_count[0] == 0: createLine_x[0] = 0.0
+        if object_len[i] == 0: continue
 
-    object_type = tile_object_information[object_load_count[1]]
-    if object_type['x'] <= createLine_x[1]:
-        create_tile_object(object_type, createLine_x[1])
-        object_load_count[1] = (object_load_count[1] + 1) % tile_object_information_len
+        object_type = object_information[depth[i]][object_load_count[i]]
+        if object_type.x <= createLine_x[i]:
+            fnc[i](object_type, createLine_x[i])
+            object_load_count[i] = min((object_load_count[i] + 1), object_len[i] -1)

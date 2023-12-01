@@ -17,6 +17,7 @@ def point_object_level_image_load():
 class PointObject:
     image = None
     level = 0  # point_object_level과 level의 값이 다르면 이미지를 새롭게 로드한다.
+    type = 'Point'
 
     def __init__(self, x, y):
         self.x, self.y = x, y

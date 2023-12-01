@@ -329,7 +329,7 @@ class Girl_Character:
 
         if group == 'player:tile_object':
             print(self.state_machine.cur_state)
-            self.y = + 60 + other.y + other.h
+            self.y = (other.y + other.h) + 3
             self.jumpAcceleration = -1.0
             if self.state_machine.cur_state == JumpFall or self.state_machine.cur_state == DoubleJumpFall:
                 self.state_machine.handle_event(('END_ACTION', 0))

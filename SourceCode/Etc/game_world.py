@@ -1,4 +1,5 @@
 # 게임 월드 모듈
+import pickle
 
 objects = [[] for _ in range(5)]  # 레이어 구별
 # 충돌 그룹 정보를 dict로 표현
@@ -98,3 +99,14 @@ def mounse_collide(a, x, y):
     if ba > tb: return False
 
     return True
+
+
+def save_world(path):
+    with open(path, "wb") as f:
+        pickle.dump(objects, f)
+
+
+def load_world(path):
+    with open(path, "rb") as f:
+        data = pickle.load(f)
+    return data

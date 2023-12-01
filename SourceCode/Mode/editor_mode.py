@@ -3,7 +3,7 @@ from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDL_MOUSEMOTION, SDL_MOUSEB
     SDL_BUTTON_LEFT, SDLK_s, SDLK_l, SDLK_LEFT, SDLK_RIGHT, SDLK_UP, SDLK_DOWN
 
 from SourceCode.Etc import game_framework, game_world
-from SourceCode.Etc.global_variable import canvasSIZE
+from SourceCode.Etc.global_variable import canvasSIZE, depth
 from SourceCode.Mode import title_mode
 from SourceCode.Object import tile_object, hurdle_object, point_object, coin_object, booster_object, magnet_object, \
     healing_object
@@ -106,11 +106,14 @@ class mouse_img_load:
 def create_object(type, num, x, y):
     match (type):
         case 0:
-            return object_type_list[type](num, x, y)
+            t = object_type_list[type](num, x, y)
+            game_world.add_object(t, depth['Tile'])
         case 1:
-            return object_type_list[type](hurdleType[num], x, y)
+            t = object_type_list[type](hurdleType[num], x, y)
+            game_world.add_object(t, depth['Hurdle'])
         case 2 | 3 | 4 | 5 | 6:
-            return object_type_list[type](x, y)
+            t = object_type_list[type](x, y)
+            game_world.add_object(t, depth['Item'])
 
 
 def move_display(speed):
@@ -147,8 +150,8 @@ def handle_events():
 
         elif event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == SDL_BUTTON_LEFT:
-                c = create_object(object_type, object_num, MousePos_x, MousePos_y)
-                game_world.add_object(c, 1)
+                create_object(object_type, object_num, MousePos_x, MousePos_y)
+
             else:
                 for i in game_world.objects[1]:
                     if game_world.mounse_collide(i, MousePos_x, MousePos_y):

@@ -1,13 +1,14 @@
 from pico2d import load_image
 
 from SourceCode.Etc import game_world, game_speed, global_variable
+from SourceCode.Etc.global_variable import depth
 
 
 def add_back_ground():
     if game_world.objects[0][0].x <= -1280:
         game_world.remove_object(game_world.objects[0][0])
         background = BackGround(game_world.objects[0][0].x + 1280)
-        game_world.add_object(background, 0)
+        game_world.add_object(background, depth['BackGround'])
 
 
 class BackGround:

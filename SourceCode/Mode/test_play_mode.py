@@ -2,10 +2,8 @@ from pico2d import *
 
 from SourceCode.Character.girl_character import Girl_Character
 from SourceCode.Etc import game_framework, game_speed, game_world
-from SourceCode.Etc.global_variable import canvasSIZE
+from SourceCode.Etc.global_variable import canvasSIZE, depth
 from SourceCode.Object import point_object
-from SourceCode.Object.hurdle_object import HurdleObject
-from SourceCode.Object.tile_object import TileObject
 from SourceCode.Stage.background import BackGround
 from SourceCode.Stage.create_object import setting_stage, object_create
 
@@ -47,11 +45,11 @@ def init():
     global player
 
     player = Girl_Character()
-    game_world.add_object(player, 3)
+    game_world.add_object(player, depth['Player'])
     collision_pair_setting()
 
-    game_world.add_object(BackGround(0), 0)
-    game_world.add_object(BackGround(canvasSIZE[0]), 0)
+    game_world.add_object(BackGround(0), depth['BackGround'])
+    game_world.add_object(BackGround(canvasSIZE[0]), depth['BackGround'])
 
     setting_stage()
 

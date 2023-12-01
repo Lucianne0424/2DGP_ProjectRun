@@ -2,7 +2,7 @@ import tomllib
 
 from SourceCode.Etc import game_speed, game_world
 from SourceCode.Etc.game_speed import Game_Speed
-from SourceCode.Etc.global_variable import stage, canvasSIZE
+from SourceCode.Etc.global_variable import stage, canvasSIZE, depth
 from SourceCode.Object import booster_object, point_object, coin_object, magnet_object, healing_object, hurdle_object, \
     tile_object
 
@@ -47,7 +47,7 @@ def create_item_object(object_type, x):
     gap = ob_x - x
 
     object_create = item_type_dict[ob_type][0](create_pos_x + gap, ob_y)
-    game_world.add_object(object_create, 4)
+    game_world.add_object(object_create, depth['Item'])
     game_world.add_collision_pair(item_type_dict[ob_type][1], None, object_create)
 
 
@@ -59,7 +59,7 @@ def create_tile_object(object_type, x):
     gap = ob_x - x
 
     object_create = tile_object.TileObject(ob_type, create_pos_x + gap, ob_y)
-    game_world.add_object(object_create, 4)
+    game_world.add_object(object_create, depth['Tile'])
     game_world.add_collision_pair('player:tile_object', None, object_create)
 
 

@@ -109,4 +109,8 @@ def save_world(path):
 def load_world(path):
     with open(path, "rb") as f:
         data = pickle.load(f)
+
+    for i in data:
+        i.sort(key=lambda c: c.x)
+
     return data

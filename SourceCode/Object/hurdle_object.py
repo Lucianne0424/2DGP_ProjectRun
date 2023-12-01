@@ -1,14 +1,14 @@
-from pico2d import draw_rectangle, get_time, load_image
+from pico2d import draw_rectangle, load_image
 
 from SourceCode.Etc import game_speed
 from SourceCode.Etc.game_world import remove_object
-from SourceCode.Etc.global_variable import canvasSIZE
 from SourceCode.Object.booster_object import Booster_state
 
 
 class HurdleObject:
     Hurdle_names = [('Ghost', 14)]
     image = {}
+
     def __init__(self, hurdleName, x, y):
         self.x, self.y = x, y
         self.hurdleName = hurdleName
@@ -20,24 +20,26 @@ class HurdleObject:
         self.w = HurdleObject.image[self.hurdleName][0].w
         self.h = HurdleObject.image[self.hurdleName][0].h
 
-        self.flying_togle = False
+        self.flying_toggle = False
         self.acceleration = 10.0
         self.rotate = 0.0
 
+    def __setstate__(self, state):
+        self.__init__(state['hurdleName'], state['x'], state['y'])
 
     def update(self):
         self.x -= game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS)
         if self.x <= 0 - self.w:
             remove_object(self)
 
-        if self.flying_togle:
+        if self.flying_toggle:
             self.x -= game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS) * 2
             self.y += game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS) * self.acceleration
             deceleration = self.acceleration - game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS) * 0.05
             self.acceleration = max(deceleration, 1.0)
 
     def draw(self):
-        if self.flying_togle:
+        if self.flying_toggle:
             self.image[self.hurdleName][0].rotate_draw(self.rotate, self.x, self.y)
             self.rotate += 1.0
         else:
@@ -45,9 +47,9 @@ class HurdleObject:
         draw_rectangle(*self.get_hit_box())
 
     def get_hit_box(self):
-        return self.x - self.w/2, self.y - self.h/2, self.x + self.w/2, self.y + self.h/2
+        return self.x - self.w / 2, self.y - self.h / 2, self.x + self.w / 2, self.y + self.h / 2
 
     def handle_collision(self, group, other):
         if group == 'player:hurdle_object':
             if Booster_state.return_booster_time():
-                self.flying_togle = True
+                self.flying_toggle = True

@@ -1,13 +1,14 @@
 from pico2d import draw_rectangle, load_image
 
-from SourceCode.Etc import game_speed, global_variable
+from SourceCode.Etc import game_speed
 from SourceCode.Etc.game_world import remove_object
 
 
 class TileObject:
     image = []
-    draw_size = [ 100, 35 ]
-    def __init__(self, index, x, y = -50):
+    draw_size = [100, 40]
+
+    def __init__(self, index, x, y=-50):
         self.index, self.x, self.y = index, x, y
 
         if not TileObject.image:
@@ -19,13 +20,13 @@ class TileObject:
         self.w = TileObject.draw_size[self.index % 2]
         self.h = TileObject.image[self.index].h
 
+    def __setstate__(self, state):
+        self.__init__(state['index'], state['x'], state['y'])
 
     def update(self):
         self.x -= game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS)
         if self.x <= -300:
             remove_object(self)
-
-
 
     def draw(self):
         TileObject.image[self.index].draw(self.x, self.y, self.w, self.h)

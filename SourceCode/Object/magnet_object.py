@@ -2,7 +2,6 @@ from pico2d import draw_rectangle, get_time, load_image
 
 from SourceCode.Etc import game_speed
 from SourceCode.Etc.game_world import remove_object
-from SourceCode.Etc.global_variable import canvasSIZE
 
 
 class Magnet_state:
@@ -17,7 +16,6 @@ class Magnet_state:
             Magnet_state.update_magnet_pos(x, y)
             if get_time() - Magnet_state.return_magnet_time() >= Magnet_state.magnet_cooldown:
                 Magnet_state.magnet_change(False)
-
 
     @staticmethod
     def magnet_change(time):
@@ -69,6 +67,9 @@ class MagnetObject:
 
         if MagnetObject.image == None:
             MagnetObject.image = load_image('.//img//item//magnet.png')
+
+    def __setstate__(self, state):
+        self.__init__(state['x'], state['y'])
 
     def update(self):
         self.x -= game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS)

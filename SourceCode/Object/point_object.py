@@ -1,7 +1,6 @@
 from pico2d import draw_rectangle, load_image
 
 from SourceCode.Etc import game_speed, game_world
-from SourceCode.Etc.global_variable import canvasSIZE
 from SourceCode.Object.magnet_object import Magnet_state
 
 point_object_level = 1  # 점수 오브젝트 레벨
@@ -25,6 +24,9 @@ class PointObject:
         if PointObject.image == None:
             PointObject.image = load_image(point_object_level_image_load())
             PointObject.level = point_object_level
+
+    def __setstate__(self, state):
+        self.__init__(state['x'], state['y'])
 
     def update(self):
         self.x -= game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS)

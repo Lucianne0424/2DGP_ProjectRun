@@ -1,9 +1,7 @@
 from pico2d import draw_rectangle, load_image
 
 from SourceCode.Etc import game_speed, game_world
-from SourceCode.Etc.global_variable import canvasSIZE
 from SourceCode.Object.magnet_object import Magnet_state
-
 
 
 class HealingObject:
@@ -14,6 +12,9 @@ class HealingObject:
 
         if HealingObject.image == None:
             HealingObject.image = load_image('.//img//item//Healing.png')
+
+    def __setstate__(self, state):
+        self.__init__(state['x'], state['y'])
 
     def update(self):
         self.x -= game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS)

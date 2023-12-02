@@ -74,9 +74,9 @@ def object_create():
     for i in list:
         createLine_x[i] += speed
 
-        if object_len[i] == 0: continue
+        if object_len[i] == 0 or object_load_count[i] == object_len[i]: continue
 
         object_type = object_information[depth[i]][object_load_count[i]]
         if object_type.x <= createLine_x[i]:
             fnc[i](object_type, createLine_x[i])
-            object_load_count[i] = min((object_load_count[i] + 1), object_len[i] -1)
+            object_load_count[i] += 1

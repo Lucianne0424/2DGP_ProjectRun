@@ -1,8 +1,9 @@
-from pico2d import draw_rectangle, get_time, load_image, load_wav
+from pico2d import draw_rectangle, get_time, load_image, load_wav, load_music
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1, SDLK_s
 
-from SourceCode.Etc import game_speed, game_framework
+from SourceCode.Etc import game_speed, game_framework, global_variable
 from SourceCode.Etc.global_variable import hpLevel, stage
+from SourceCode.Mode import game_over_mode
 from SourceCode.Object.booster_object import Booster_state
 from SourceCode.Object.magnet_object import Magnet_state
 from SourceCode.Object.point_object import point_object_level
@@ -35,6 +36,7 @@ class Damage:
         player.action = 'Damage'
         player.frame = 0
         player.Hp -= 10
+        player.state_machine.handle_event(('GameOver', player.Hp))
 
     @staticmethod
     def exit(player, event):
@@ -71,6 +73,9 @@ class GameOver:
 
         if player.frame == 10:
             game_speed.speed = 0
+            player.BGM.stop()
+            global_variable.coin = player.coin
+            game_framework.change_mode(game_over_mode)
 
     @staticmethod
     def draw(player):
@@ -222,7 +227,7 @@ class StateMachine:
         self.player = player
         self.cur_state = Run
         self.transitions = {
-            Run: {space_down: JumpStart, game_over: GameOver, Key_down_1: Damage, damage: Damage},
+            Run: {end_action: Run, space_down: JumpStart, game_over: GameOver, Key_down_1: Damage, damage: Damage},
             JumpStart: {end_action: JumpFall, space_down: DoubleJumpStart, damage: Damage},
             JumpFall: {end_action: Landing, space_down: DoubleJumpStart, damage: Damage},
             DoubleJumpStart: {end_action: DoubleJumpFall, damage: Damage},
@@ -267,6 +272,7 @@ class Girl_Character:
 
         self.Graity = 0.398
         self.jumpAcceleration = -1.0
+        self.game_over_toggle = False
 
         if not Girl_Character.jump_sound:
             Girl_Character.jump_sound = load_wav('.//Sound//jump_sound.ogg')
@@ -278,13 +284,12 @@ class Girl_Character:
 
 
         if not Girl_Character.BGM:
-            Girl_Character.BGM = load_wav('.//Sound//bgm_main'+ str(stage) + '.ogg')
+            Girl_Character.BGM = load_music('.//Sound//bgm_main'+ str(stage) + '.ogg')
             Girl_Character.BGM.set_volume(50)
         Girl_Character.BGM.repeat_play()
 
 
 
-        self.score = 0
         self.coin = 0
 
         self.images = {}
@@ -310,6 +315,11 @@ class Girl_Character:
             self.skill_time = False
         if self.invincible_time != False and get_time() - self.invincible_time >= 2:
             self.invincible_time = False
+        if self.y <= -200 and self.game_over_toggle == False:
+            self.Hp = 0.0
+            self.game_over_toggle = True
+            self.state_machine.handle_event(('END_ACTION', 0))
+            self.state_machine.handle_event(('GameOver', self.Hp))
 
     def handle_event(self, event):
         if self.skill_time == False and event.key == SDLK_s:
@@ -346,10 +356,11 @@ class Girl_Character:
 
     def handle_collision(self, group, other):
         if group == 'player:point_object':
-            self.score += 10 * point_object_level
+            global_variable.score += 10 * point_object_level
 
         if group == 'player:coin_object':
             self.coin += 10
+            global_variable.score += 15 * point_object_level
 
         if group == 'player:booster_object':
             if self.skill_time == False or not Booster_state.return_booster_time():
@@ -372,7 +383,7 @@ class Girl_Character:
                 self.invincible_time = get_time()
                 self.state_machine.handle_event(('Damage', 0))
             elif Booster_state.return_booster_time():
-                self.score += 50
+                global_variable.score += 30 * point_object_level
 
 
         if group == 'player:healing_object':

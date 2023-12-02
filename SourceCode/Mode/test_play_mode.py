@@ -1,7 +1,7 @@
 from pico2d import *
 
 from SourceCode.Character.girl_character import Girl_Character
-from SourceCode.Etc import game_framework, game_speed, game_world
+from SourceCode.Etc import game_framework, game_speed, game_world, global_variable
 from SourceCode.Etc.global_variable import canvasSIZE, depth
 from SourceCode.Object import point_object
 from SourceCode.Stage.background import BackGround
@@ -51,6 +51,7 @@ def init():
     game_world.add_object(BackGround(0), depth['BackGround'])
     game_world.add_object(BackGround(canvasSIZE[0]), depth['BackGround'])
 
+    global_variable.score = 0
     setting_stage()
 
 
@@ -68,7 +69,6 @@ def draw():
 
 
 def finish():
-    game_world.clear()
     pass
 
 

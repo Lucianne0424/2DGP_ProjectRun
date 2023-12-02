@@ -58,6 +58,13 @@ class Magnet_state:
                 return x, y
         return x, y
 
+    @staticmethod
+    def reset():
+        Magnet_state.magnet_time = False
+        Magnet_state.magnet_cooldown = 5.0
+        Magnet_state.magnet_pos = []
+        Magnet_state.magnet_range_size = 300
+
 
 class MagnetObject:
     image = None

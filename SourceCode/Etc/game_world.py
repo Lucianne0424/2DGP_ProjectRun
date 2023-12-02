@@ -1,7 +1,7 @@
 # 게임 월드 모듈
 import pickle
 
-objects = [[] for _ in range(5)]  # 레이어 구별
+objects = [[] for _ in range(6)]  # 레이어 구별
 # 충돌 그룹 정보를 dict로 표현
 collision_pairs = {}
 
@@ -65,6 +65,8 @@ def remove_object(o):
 def clear():
     for layer in objects:
         layer.clear()
+
+    collision_pairs.clear()
 
 
 # 충돌처리

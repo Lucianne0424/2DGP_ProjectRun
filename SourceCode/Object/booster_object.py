@@ -28,6 +28,13 @@ class Booster_state:
     def return_booster_speed():
         return Booster_state.booster_speed
 
+    @staticmethod
+    def reset():
+        Booster_state.booster_time = False
+        Booster_state.booster_cooldown = 5.0
+        Booster_state.booster_speed = 0.0
+
+
 
 class BoosterObject:
     image = None

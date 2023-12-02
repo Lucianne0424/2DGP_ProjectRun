@@ -24,10 +24,15 @@ def setting_stage():
     global object_information
     global object_len
 
+
     object_information = game_world.load_world(".//DataFile//editor_mode_object_data.pickle")
     object_len['Item'] = len(object_information[depth['Item']])
     object_len['Tile'] = len(object_information[depth['Tile']])
     object_len['Hurdle'] = len(object_information[depth['Hurdle']])
+
+    for i in list:
+        createLine_x[i] = 0
+        object_load_count[i] = 0
 
 
 def create_item_object(object, x):

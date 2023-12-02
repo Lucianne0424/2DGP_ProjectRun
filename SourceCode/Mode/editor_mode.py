@@ -158,9 +158,10 @@ def handle_events():
                 create_object(object_type, object_num, MousePos_x, MousePos_y)
 
             else:
-                for i in game_world.objects[1]:
-                    if game_world.mounse_collide(i, MousePos_x, MousePos_y):
-                        game_world.remove_object(i)
+                for t in game_world.objects:
+                    for i in t:
+                        if game_world.mounse_collide(i, MousePos_x, MousePos_y):
+                            game_world.remove_object(i)
 
         elif event.type == SDL_KEYDOWN and event.key == SDLK_a:
             Print_display_x -= display_speed

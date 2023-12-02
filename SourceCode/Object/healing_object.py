@@ -1,4 +1,4 @@
-from pico2d import draw_rectangle, load_image
+from pico2d import draw_rectangle, load_image, load_wav
 
 from SourceCode.Etc import game_speed, game_world
 from SourceCode.Object.magnet_object import Magnet_state
@@ -7,12 +7,17 @@ from SourceCode.Object.magnet_object import Magnet_state
 class HealingObject:
     image = None
     type = 'Healing'
+    sound = None
 
     def __init__(self, x, y):
         self.x, self.y = x, y
 
         if HealingObject.image == None:
             HealingObject.image = load_image('.//img//item//Healing.png')
+
+        if not HealingObject.sound:
+            HealingObject.sound = load_wav('.//Sound//item_sound.ogg')
+            HealingObject.sound.set_volume(32)
 
     def __setstate__(self, state):
         self.__init__(state['x'], state['y'])
@@ -32,4 +37,5 @@ class HealingObject:
 
     def handle_collision(self, group, other):
         if group == 'player:healing_object':
+            HealingObject.sound.play()
             game_world.remove_object(self)

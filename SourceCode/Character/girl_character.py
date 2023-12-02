@@ -1,8 +1,8 @@
-from pico2d import draw_rectangle, get_time, load_image
+from pico2d import draw_rectangle, get_time, load_image, load_wav
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_1, SDLK_s
 
 from SourceCode.Etc import game_speed, game_framework
-from SourceCode.Etc.global_variable import hpLevel
+from SourceCode.Etc.global_variable import hpLevel, stage
 from SourceCode.Object.booster_object import Booster_state
 from SourceCode.Object.magnet_object import Magnet_state
 from SourceCode.Object.point_object import point_object_level
@@ -58,6 +58,8 @@ class GameOver:
     def entrance(player, event):
         player.action = 'GameOver'
         player.frame = 0
+        player.game_over_sound.play()
+
 
     @staticmethod
     def exit(player, event):
@@ -66,6 +68,9 @@ class GameOver:
     @staticmethod
     def do(player):
         player.frame = min((player.frame + 10 * game_speed.ACTION_PER_TIME * game_framework.frame_time), 10)
+
+        if player.frame == 10:
+            game_speed.speed = 0
 
     @staticmethod
     def draw(player):
@@ -121,6 +126,7 @@ class DoubleJumpStart:
         player.frame = 0
         player.count = 0
         player.jumpAcceleration = jumpAcceleration
+        Girl_Character.jump_sound.play()
 
 
     @staticmethod
@@ -168,6 +174,7 @@ class JumpStart:
         player.action = 'Jump_Start'
         player.frame = 0
         player.jumpAcceleration = jumpAcceleration
+        Girl_Character.jump_sound.play()
 
 
     @staticmethod
@@ -248,15 +255,32 @@ class StateMachine:
 class Girl_Character:
     animation_names = [('Run', 10), ('Jump_Start', 6), ('Jump_Fall', 6), ('Landing', 3),
                        ('Double_Jump_Start', 7), ('GameOver', 11), ('Damage', 7)]
+    jump_sound = None
+    BGM = None
+    game_over_sound = None
 
     def __init__(self):
-        self.x, self.y = 300, 100
+        self.x, self.y, self.max_y = 300, 150, 150
         self.MaxHp = 100.0 + (hpLevel * 20)
         self.Hp = self.MaxHp
         self.frame = 0
 
         self.Graity = 0.398
         self.jumpAcceleration = -1.0
+
+        if not Girl_Character.jump_sound:
+            Girl_Character.jump_sound = load_wav('.//Sound//jump_sound.ogg')
+            Girl_Character.jump_sound.set_volume(32)
+
+        if not Girl_Character.game_over_sound:
+            Girl_Character.game_over_sound = load_wav('.//Sound//game_over_sound.ogg')
+            Girl_Character.game_over_sound.set_volume(32)
+
+
+        if not Girl_Character.BGM:
+            Girl_Character.BGM = load_wav('.//Sound//bgm_main'+ str(stage) + '.ogg')
+            Girl_Character.BGM.set_volume(50)
+        Girl_Character.BGM.repeat_play()
 
 
 
@@ -273,6 +297,8 @@ class Girl_Character:
 
         self.invincible_time = False
         self.skill_time = False
+        self.fall_tile_collision = False
+
 
     def update(self):
         self.Hp = self.Hp - 1.0 * game_framework.frame_time
@@ -287,7 +313,7 @@ class Girl_Character:
 
     def handle_event(self, event):
         if self.skill_time == False and event.key == SDLK_s:
-            Booster_state.booster_change(get_time(), 5.0)
+            Booster_state.booster_change(get_time(), 3.0)
             self.skill_time = get_time()
         self.state_machine.handle_event(('INPUT', event))
 
@@ -298,10 +324,16 @@ class Girl_Character:
             draw_rectangle(*self.get_magnet_hit_box())
 
     def G_force(self):
-        mul_speed = max(1.0, Booster_state.return_booster_speed())
-
         y = game_speed.Game_Speed.return_spped(game_speed.PLAYER_SPEED_PPS) * self.jumpAcceleration * jumpPower
         self.jumpAcceleration -= self.Graity * game_speed.Game_Speed.return_spped(game_speed.PLAYER_SPEED_PPS)
+
+        if y > 0:
+            self.fall_tile_collision = True
+            self.max_y = self.y - 30
+            print(self.max_y)
+        else:
+            self.fall_tile_collision = False
+
         return y
 
     def get_hit_box(self):
@@ -321,17 +353,19 @@ class Girl_Character:
 
         if group == 'player:booster_object':
             if self.skill_time == False or not Booster_state.return_booster_time():
-                Booster_state.booster_change(get_time(), 3.0)
+                Booster_state.booster_change(get_time(), 2.0)
 
         if group == 'player:magnet_object':
             Magnet_state.magnet_change(get_time())
             Magnet_state.update_magnet_pos(self.x, self.y)
 
         if group == 'player:tile_object':
-            self.y = (other.y + other.h) + 3
-            self.jumpAcceleration = -1.0
-            if self.state_machine.cur_state == JumpFall or self.state_machine.cur_state == DoubleJumpFall:
-                self.state_machine.handle_event(('END_ACTION', 0))
+            if not self.fall_tile_collision and self.max_y >= (other.y + other.h):
+                self.y = (other.y + other.h) + 3
+                self.max_y = (other.y + other.h) + 3
+                self.jumpAcceleration = -1.0
+                if self.state_machine.cur_state == JumpFall or self.state_machine.cur_state == DoubleJumpFall:
+                    self.state_machine.handle_event(('END_ACTION', 0))
 
         if group == 'player:hurdle_object':
             if self.invincible_time == False and not Booster_state.return_booster_time():

@@ -1,4 +1,4 @@
-from pico2d import draw_rectangle, load_image
+from pico2d import draw_rectangle, load_image, load_wav
 
 from SourceCode.Etc import game_speed, game_world
 from SourceCode.Object.magnet_object import Magnet_state
@@ -18,6 +18,7 @@ class PointObject:
     image = None
     level = 0  # point_object_level과 level의 값이 다르면 이미지를 새롭게 로드한다.
     type = 'Point'
+    sound = None
 
     def __init__(self, x, y):
         self.x, self.y = x, y
@@ -36,6 +37,11 @@ class PointObject:
         if point_object_level != PointObject.level:
             PointObject.image = load_image(point_object_level_image_load())
             PointObject.level = point_object_level
+
+        if not PointObject.sound:
+            PointObject.sound = load_wav('.//Sound//point_sound.ogg')
+            PointObject.sound.set_volume(32)
+
         self.x, self.y = Magnet_state.magnet_checking(self.x, self.y)
 
     def draw(self):
@@ -47,4 +53,5 @@ class PointObject:
 
     def handle_collision(self, group, other):
         if group == 'player:point_object':
+            PointObject.sound.play()
             game_world.remove_object(self)

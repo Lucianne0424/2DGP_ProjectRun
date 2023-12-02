@@ -1,4 +1,4 @@
-from pico2d import draw_rectangle, get_time, load_image
+from pico2d import draw_rectangle, get_time, load_image, load_wav
 
 from SourceCode.Etc import game_speed
 from SourceCode.Etc.game_world import remove_object
@@ -32,12 +32,17 @@ class Booster_state:
 class BoosterObject:
     image = None
     type = 'Booster'
+    sound = None
 
     def __init__(self, x, y):
         self.x, self.y = x, y
 
         if BoosterObject.image == None:
             BoosterObject.image = load_image('.//img//item//Booster.png')
+
+        if not BoosterObject.sound:
+            BoosterObject.sound = load_wav('.//Sound//item_sound.ogg')
+            BoosterObject.sound.set_volume(32)
 
     def __setstate__(self, state):
         self.__init__(state['x'], state['y'])
@@ -57,4 +62,5 @@ class BoosterObject:
 
     def handle_collision(self, group, other):
         if group == 'player:booster_object':
+            BoosterObject.sound.play()
             remove_object(self)

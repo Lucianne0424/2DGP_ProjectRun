@@ -1,4 +1,4 @@
-from pico2d import draw_rectangle, load_image
+from pico2d import draw_rectangle, load_image, load_wav
 
 from SourceCode.Etc import game_speed
 from SourceCode.Etc.game_world import remove_object
@@ -9,6 +9,7 @@ class HurdleObject:
     Hurdle_names = [('Ghost', 14), ('hurdle_high', 1), ('hurdle_low', 1)]
     image = {}
     type = 'Hurdle'
+    sound = []
 
     def __init__(self, hurdleName, x, y):
         self.x, self.y = x, y
@@ -21,6 +22,12 @@ class HurdleObject:
         for name in HurdleObject.Hurdle_names:
             if name[0] == hurdleName:
                 self.max_frame = name[1]
+
+        if not HurdleObject.sound:
+            HurdleObject.sound.append(load_wav('.//Sound//g_obs2.ogg'))
+            HurdleObject.sound[0].set_volume(20)
+            HurdleObject.sound.append(load_wav('.//Sound//g_obs1.ogg'))
+            HurdleObject.sound[1].set_volume(20)
 
         self.w = HurdleObject.image[self.hurdleName][0].w
         self.h = HurdleObject.image[self.hurdleName][0].h
@@ -60,4 +67,7 @@ class HurdleObject:
     def handle_collision(self, group, other):
         if group == 'player:hurdle_object':
             if Booster_state.return_booster_time():
+                HurdleObject.sound[0].play()
                 self.flying_toggle = True
+            else:
+                HurdleObject.sound[1].play()

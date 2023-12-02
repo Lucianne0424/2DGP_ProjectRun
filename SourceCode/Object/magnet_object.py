@@ -1,4 +1,4 @@
-from pico2d import draw_rectangle, get_time, load_image
+from pico2d import draw_rectangle, get_time, load_image, load_wav
 
 from SourceCode.Etc import game_speed
 from SourceCode.Etc.game_world import remove_object
@@ -62,12 +62,17 @@ class Magnet_state:
 class MagnetObject:
     image = None
     type = 'Magnet'
+    sound = None
 
     def __init__(self, x, y):
         self.x, self.y = x, y
 
         if MagnetObject.image == None:
             MagnetObject.image = load_image('.//img//item//magnet.png')
+
+        if not MagnetObject.sound:
+            MagnetObject.sound = load_wav('.//Sound//magnet_sound.ogg')
+            MagnetObject.sound.set_volume(32)
 
     def __setstate__(self, state):
         self.__init__(state['x'], state['y'])
@@ -87,4 +92,5 @@ class MagnetObject:
 
     def handle_collision(self, group, other):
         if group == 'player:magnet_object':
+            MagnetObject.sound.play()
             remove_object(self)

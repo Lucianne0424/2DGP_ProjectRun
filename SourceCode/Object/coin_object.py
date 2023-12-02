@@ -1,4 +1,4 @@
-from pico2d import draw_rectangle, load_image
+from pico2d import draw_rectangle, load_image, load_wav
 
 from SourceCode.Etc import game_speed
 from SourceCode.Etc.game_world import remove_object
@@ -8,12 +8,17 @@ from SourceCode.Object.magnet_object import Magnet_state
 class CoinObject:
     image = None
     type = 'Coin'
+    sound = None
 
     def __init__(self, x, y):
         self.x, self.y = x, y
 
         if CoinObject.image == None:
             CoinObject.image = load_image('.//img//Coin//Coin.png')
+
+        if not CoinObject.sound:
+            CoinObject.sound = load_wav('.//Sound//coin_sound.ogg')
+            CoinObject.sound.set_volume(32)
 
     def __setstate__(self, state):
         self.__init__(state['x'], state['y'])
@@ -33,4 +38,5 @@ class CoinObject:
 
     def handle_collision(self, group, other):
         if group == 'player:coin_object':
+            CoinObject.sound.play()
             remove_object(self)

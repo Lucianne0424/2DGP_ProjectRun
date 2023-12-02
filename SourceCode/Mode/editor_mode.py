@@ -17,7 +17,7 @@ image = None  # 마우스 이미지
 object_type = 0  # 오브젝트 타입
 object_num = 0  # 타일이나 허들의 종류
 
-hurdleType = ['Ghost']
+hurdleType = ['Ghost', 'hurdle_high', 'hurdle_low']
 hurdleType_and_tile_len = [8, len(hurdleType)]
 
 object_type_list = [

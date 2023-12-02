@@ -23,6 +23,10 @@ PLAYER_SPEED_PPS = ((PLAYER_SPEED_KMPH * 1000.0 / 60.0) / 60.0) * PIXEL_PER_METE
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 
+# 장애물 속도
+HURDLE_TIME_PER_ACTION = 0.05
+HURDLE_ACTION_PER_TIME = 1.0 / HURDLE_TIME_PER_ACTION
+
 # 게임 속도
 speed = 1.0
 pauseTime = False
@@ -31,6 +35,10 @@ class Game_Speed:
     @staticmethod
     def return_spped(PPS):
         return (PPS * game_framework.frame_time) * (speed + booster_object.Booster_state.return_booster_speed())
+
+    @staticmethod
+    def return_frame_speed(PPS):
+        return (PPS * game_framework.frame_time)
 
     @staticmethod
     def pauseGame():

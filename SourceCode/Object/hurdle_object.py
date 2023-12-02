@@ -6,7 +6,7 @@ from SourceCode.Object.booster_object import Booster_state
 
 
 class HurdleObject:
-    Hurdle_names = [('Ghost', 14)]
+    Hurdle_names = [('Ghost', 14), ('hurdle_high', 1), ('hurdle_low', 1)]
     image = {}
     type = 'Hurdle'
 
@@ -18,18 +18,25 @@ class HurdleObject:
             for name in HurdleObject.Hurdle_names:
                 HurdleObject.image[name[0]] = [load_image('.//img//Hurdle//stage_1//' + name[0] + '//' + name[0] + '_' + str(i) + '.png') for i in range(0, name[1])]
 
+        for name in HurdleObject.Hurdle_names:
+            if name[0] == hurdleName:
+                self.max_frame = name[1]
+
         self.w = HurdleObject.image[self.hurdleName][0].w
         self.h = HurdleObject.image[self.hurdleName][0].h
 
         self.flying_toggle = False
         self.acceleration = 10.0
         self.rotate = 0.0
+        self.frame = 0.0
 
     def __setstate__(self, state):
         self.__init__(state['hurdleName'], state['x'], state['y'])
 
     def update(self):
         self.x -= game_speed.Game_Speed.return_spped(game_speed.OBJECT_SPEED_PPS)
+        self.frame = (self.frame + game_speed.Game_Speed.return_frame_speed(game_speed.HURDLE_ACTION_PER_TIME)) % self.max_frame
+
         if self.x <= 0 - self.w:
             remove_object(self)
 
@@ -41,10 +48,10 @@ class HurdleObject:
 
     def draw(self):
         if self.flying_toggle:
-            self.image[self.hurdleName][0].rotate_draw(self.rotate, self.x, self.y)
+            self.image[self.hurdleName][int(self.frame)].rotate_draw(self.rotate, self.x, self.y)
             self.rotate += 1.0
         else:
-            self.image[self.hurdleName][0].draw(self.x, self.y)
+            self.image[self.hurdleName][int(self.frame)].draw(self.x, self.y)
         draw_rectangle(*self.get_hit_box())
 
     def get_hit_box(self):

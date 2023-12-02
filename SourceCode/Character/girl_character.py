@@ -328,7 +328,6 @@ class Girl_Character:
             Magnet_state.update_magnet_pos(self.x, self.y)
 
         if group == 'player:tile_object':
-            print(self.state_machine.cur_state)
             self.y = (other.y + other.h) + 3
             self.jumpAcceleration = -1.0
             if self.state_machine.cur_state == JumpFall or self.state_machine.cur_state == DoubleJumpFall:

@@ -229,14 +229,14 @@ class StateMachine:
         self.cur_state = Run
         self.transitions = {
             Run: {end_action: Run, space_down: JumpStart, game_over: GameOver, Key_down_1: Damage, damage: Damage},
-            JumpStart: {end_action: JumpFall, space_down: DoubleJumpStart, damage: Damage},
-            JumpFall: {end_action: Landing, space_down: DoubleJumpStart, damage: Damage},
-            DoubleJumpStart: {end_action: DoubleJumpFall, damage: Damage},
-            DoubleJumpFall: {end_action: Landing, damage: Damage},
-            Landing: {end_action: Run, space_down: JumpStart, damage: Damage},
+            JumpStart: {end_action: JumpFall, space_down: DoubleJumpStart, damage: Damage, game_over: GameOver},
+            JumpFall: {end_action: Landing, space_down: DoubleJumpStart, damage: Damage, game_over: GameOver},
+            DoubleJumpStart: {end_action: DoubleJumpFall, damage: Damage, game_over: GameOver},
+            DoubleJumpFall: {end_action: Landing, damage: Damage, game_over: GameOver},
+            Landing: {end_action: Run, space_down: JumpStart, damage: Damage, game_over: GameOver},
 
             GameOver: {game_over: GameOver},
-            Damage: {end_action: Run}
+            Damage: {end_action: Run, game_over: GameOver}
         }
 
     def start(self):
@@ -319,7 +319,6 @@ class Girl_Character:
         if self.y <= -200 and self.game_over_toggle == False:
             self.Hp = 0.0
             self.game_over_toggle = True
-            self.state_machine.handle_event(('END_ACTION', 0))
             self.state_machine.handle_event(('GameOver', self.Hp))
 
     def handle_event(self, event):

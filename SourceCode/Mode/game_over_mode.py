@@ -60,8 +60,10 @@ def handle_events():
                 t = mouse_event.Mouse_event.collision_Ui_object()
                 if t != False:
                     if t.command == 'next':
+                        t.sound.play()
                         game_framework.change_mode(title_mode)
                     elif t.command == 'replay':
+                        t.sound.play()
                         game_framework.change_mode(test_play_mode)
 
 

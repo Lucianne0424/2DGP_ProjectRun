@@ -1,7 +1,7 @@
 # 게임 월드 모듈
 import pickle
 
-objects = [[] for _ in range(6)]  # 레이어 구별
+objects = [[] for _ in range(7)]  # 레이어 구별
 # 충돌 그룹 정보를 dict로 표현
 collision_pairs = {}
 
@@ -89,18 +89,6 @@ def handle_collisions():
                 if collide(a, b):
                     a.handle_collision(group, b)
                     b.handle_collision(group, a)
-
-
-def mounse_collide(a, x, y):
-    la, ba, ra, ta = a.get_hit_box()
-    lb, bb, rb, tb = x - 5, y - 5, x + 5,  y + 5
-
-    if la > rb: return False
-    if ra < lb: return False
-    if ta < bb: return False
-    if ba > tb: return False
-
-    return True
 
 
 def save_world(path):

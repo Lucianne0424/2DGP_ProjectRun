@@ -2,7 +2,7 @@ from pico2d import get_events, clear_canvas, update_canvas, load_image
 from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDL_MOUSEMOTION, SDL_MOUSEBUTTONDOWN, SDLK_a, SDLK_d, \
     SDL_BUTTON_LEFT, SDLK_s, SDLK_l, SDLK_LEFT, SDLK_RIGHT, SDLK_UP, SDLK_DOWN
 
-from SourceCode.Etc import game_framework, game_world
+from SourceCode.Etc import game_framework, game_world, mouse_event
 from SourceCode.Etc.global_variable import canvasSIZE, depth
 from SourceCode.Mode import title_mode
 from SourceCode.Object import tile_object, hurdle_object, point_object, coin_object, booster_object, magnet_object, \
@@ -31,13 +31,6 @@ object_type_list = [
 ]
 object_type_len = len(object_type_list)
 tile_size = [100, 40]
-
-
-def return_mouse_pos(event):
-    x, y = event.x, (canvasSIZE[1] - 1 - event.y)
-    x = x // 10 * 10
-    y = y // 10 * 10
-    return x, y
 
 
 def clamp(min, num, max):
@@ -151,7 +144,7 @@ def handle_events():
             game_framework.change_mode(title_mode)
 
         elif event.type == SDL_MOUSEMOTION:
-            MousePos_x, MousePos_y = return_mouse_pos(event)
+            MousePos_x, MousePos_y = mouse_event.Mouse_event.return_mouse_pos(event)
 
         elif event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == SDL_BUTTON_LEFT:
@@ -160,7 +153,7 @@ def handle_events():
             else:
                 for t in game_world.objects:
                     for i in t:
-                        if game_world.mounse_collide(i, MousePos_x, MousePos_y):
+                        if mouse_event.Mouse_event.mounse_collide(i, MousePos_x, MousePos_y):
                             game_world.remove_object(i)
 
         elif event.type == SDL_KEYDOWN and event.key == SDLK_a:

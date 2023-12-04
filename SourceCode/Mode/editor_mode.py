@@ -129,6 +129,9 @@ def move_display(speed):
 def init():
     global object_type, object_num
     global MousePos_x, MousePos_y
+    global Ui_image
+
+    Ui_image = load_image('.//img//UI//editor_help.png')
 
     mouse_img_load.object_type(object_type, object_num)
 
@@ -228,6 +231,8 @@ def draw():
 
     game_world.render()
     game_world.render_hit_box()
+
+    Ui_image.draw(150, 550, 250, 300)
     update_canvas()
 
 

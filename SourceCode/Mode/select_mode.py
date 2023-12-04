@@ -4,7 +4,7 @@ from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDL_MOUSEMOTION, SDL_MOUSEB
 
 from SourceCode.Etc import game_framework, game_world, mouse_event, global_variable
 from SourceCode.Etc.global_variable import canvasSIZE, depth
-from SourceCode.Mode import play_mode, title_mode
+from SourceCode.Mode import play_mode, title_mode, help_mode
 from SourceCode.Object import button_object, point_object
 
 
@@ -58,7 +58,9 @@ def init():
     game_world.add_object(UI('store'), depth['UI'])
     game_world.add_object(UI('character'), depth['UI'])
 
-    game_world.add_object(button_object.ButtonObject(1150, 70, 'previous', '이 전', 34), depth['Button'])
+    game_world.add_object(button_object.ButtonObject(1150, 180, 'help', '도움말', 45), depth['Button'])
+    game_world.add_object(button_object.ButtonObject(1150, 80, 'previous', '이   전', 45), depth['Button'])
+
     game_world.add_object(button_object.SelectButtonObject(170, 320, 'girl_character_choice','Girl'), depth['Button'])
     game_world.add_object(button_object.SelectButtonObject(380, 320, 'cow_character_choice','Cow'), depth['Button'])
     game_world.add_object(button_object.SelectButtonObject(590, 320, 'magician_character_choice','Magician'), depth['Button'])
@@ -102,6 +104,9 @@ def handle_events():
                     if t.command == 'previous':
                         t.sound.play()
                         game_framework.change_mode(title_mode)
+                    elif t.command == 'help':
+                        t.sound.play()
+                        game_framework.push_mode(help_mode)
                     elif t.command == 'stage_1':
                         t.sound.play()
                         global_variable.stage = 1

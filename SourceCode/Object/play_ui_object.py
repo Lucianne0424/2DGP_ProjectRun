@@ -44,6 +44,9 @@ class Play_Ui_Object:
         self.font.draw(80, 610, ': ' + str(global_variable.score),self.color)
         self.font.draw(80, 550, ': ' + str(play_mode.player.coin), self.color)
 
+        if global_variable.mission != False:
+            self.font.draw(10, 490,global_variable.missionList[global_variable.stage - 1][0] + ': ' + str(global_variable.mission_result) + ' / ' + str(global_variable.mission), self.color)
+
 
     def get_hit_box(self):
         pass

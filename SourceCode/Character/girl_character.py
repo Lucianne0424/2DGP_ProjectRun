@@ -62,7 +62,6 @@ class Girl_Character:
 
     def update(self):
         self.Hp = self.Hp - 1.0 * game_framework.frame_time
-        print('Hp : ', self.Hp)
         self.state_machine.update()
         Booster_state.update(0.0)
         Magnet_state.update(self.x, self.y)
@@ -107,10 +106,14 @@ class Girl_Character:
     def handle_collision(self, group, other):
         if group == 'player:point_object':
             global_variable.score += 10 * point_object_level
+            if global_variable.mission != False and global_variable.stage == 3:
+                global_variable.mission_result += 1
 
         if group == 'player:coin_object':
             self.coin += 10
             global_variable.score += 15 * point_object_level
+            if global_variable.mission != False and global_variable.stage == 2:
+                global_variable.mission_result = self.coin
 
         if group == 'player:booster_object':
             Booster_state.booster_change(get_time(), 2.0)
@@ -133,6 +136,8 @@ class Girl_Character:
                 self.state_machine.handle_event(('Damage', 0))
             elif Booster_state.return_booster_time():
                 global_variable.score += 30 * point_object_level
+            if global_variable.mission != False and global_variable.stage == 1 and not other.flying_toggle:
+                global_variable.mission_result += 1
 
 
         if group == 'player:healing_object':

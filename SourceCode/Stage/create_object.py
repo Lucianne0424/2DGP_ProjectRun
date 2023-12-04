@@ -1,4 +1,4 @@
-from SourceCode.Etc import game_speed, game_world
+from SourceCode.Etc import game_speed, game_world, global_variable
 from SourceCode.Etc.game_speed import Game_Speed
 from SourceCode.Etc.global_variable import canvasSIZE, depth
 from SourceCode.Object import booster_object, point_object, coin_object, magnet_object, healing_object, hurdle_object, \
@@ -33,6 +33,12 @@ def setting_stage():
     for i in list:
         createLine_x[i] = 0
         object_load_count[i] = 0
+
+    if global_variable.stage != 0:
+        global_variable.mission = global_variable.missionList[global_variable.stage - 1][1]
+        global_variable.mission_result = 0
+    else:
+        global_variable.mission = 0
 
 
 def create_item_object(object, x):

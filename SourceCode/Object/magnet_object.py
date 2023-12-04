@@ -18,8 +18,10 @@ class Magnet_state:
                 Magnet_state.magnet_change(False)
 
     @staticmethod
-    def magnet_change(time):
+    def magnet_change(time, cool = 5.0, range_size = 300):
         Magnet_state.magnet_time = time
+        Magnet_state.magnet_cooldown = cool
+        Magnet_state.magnet_range_size = range_size
 
     @staticmethod
     def return_magnet_time():

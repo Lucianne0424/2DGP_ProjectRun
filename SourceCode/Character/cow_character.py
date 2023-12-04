@@ -88,7 +88,6 @@ class Cow_Character:
         if y > 0:
             self.fall_tile_collision = True
             self.max_y = self.y - 30
-            print(self.max_y)
         else:
             self.fall_tile_collision = False
 
@@ -99,7 +98,7 @@ class Cow_Character:
 
     def get_magnet_hit_box(self):
         pos = Magnet_state.return_magnet_pos()
-        draw_in_size = 300
+        draw_in_size = Magnet_state.magnet_range_size
         return pos[0] - draw_in_size, pos[1] - draw_in_size, pos[0] + draw_in_size, pos[1] + draw_in_size
 
     def handle_collision(self, group, other):

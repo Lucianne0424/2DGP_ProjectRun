@@ -9,11 +9,11 @@ from SourceCode.Object.magnet_object import Magnet_state
 from SourceCode.Object.point_object import point_object_level
 
 
-class Girl_Character:
+class Magician_Character:
     name_list = ['Run', 'Jump_Start', 'Jump_Fall', 'Landing', 'Double_Jump_Start', 'GameOver', 'Damage']
 
-    animation_names = {'Run': 10, 'Jump_Start': 6, 'Jump_Fall': 6, 'Landing': 3,
-                       'Double_Jump_Start': 7, 'GameOver': 11, 'Damage': 7}
+    animation_names = {'Run': 8, 'Jump_Start': 7, 'Jump_Fall': 6, 'Landing': 2,
+                       'Double_Jump_Start': 4, 'GameOver': 14, 'Damage': 7}
 
     jump_sound = None
     BGM = None
@@ -29,34 +29,33 @@ class Girl_Character:
         self.jumpAcceleration = -1.0
         self.game_over_toggle = False
 
-        if not Girl_Character.jump_sound:
-            Girl_Character.jump_sound = load_wav('.//Sound//jump_sound.ogg')
-            Girl_Character.jump_sound.set_volume(32)
+        if not Magician_Character.jump_sound:
+            Magician_Character.jump_sound = load_wav('.//Sound//jump_sound.ogg')
+            Magician_Character.jump_sound.set_volume(32)
 
-        if not Girl_Character.game_over_sound:
-            Girl_Character.game_over_sound = load_wav('.//Sound//game_over_sound.ogg')
-            Girl_Character.game_over_sound.set_volume(32)
+        if not Magician_Character.game_over_sound:
+            Magician_Character.game_over_sound = load_wav('.//Sound//game_over_sound.ogg')
+            Magician_Character.game_over_sound.set_volume(32)
 
 
-        if not Girl_Character.BGM:
-            Girl_Character.BGM = load_music('.//Sound//bgm_main'+ str(stage) + '.ogg')
-            Girl_Character.BGM.set_volume(50)
-        Girl_Character.BGM.repeat_play()
+        if not Magician_Character.BGM:
+            Magician_Character.BGM = load_music('.//Sound//bgm_main'+ str(stage) + '.ogg')
+            Magician_Character.BGM.set_volume(50)
+        Magician_Character.BGM.repeat_play()
 
 
 
         self.coin = 0
 
         self.images = {}
-        for name in Girl_Character.name_list:
+        for name in Magician_Character.name_list:
             self.images[name] = [
-                load_image('.//img//Character//Girl//' + name + '//' + name + '_' + str(i) + '.png') for i in range(0, Girl_Character.animation_names[name])]
+                load_image('.//img//Character//Magician//' + name + '//' + name + '_' + str(i) + '.png') for i in range(0, Magician_Character.animation_names[name])]
 
         self.state_machine = state_machine.StateMachine(self)
         self.state_machine.start()
 
         self.invincible_time = False
-        self.skill_time = False
         self.fall_tile_collision = False
 
 
@@ -66,19 +65,17 @@ class Girl_Character:
         self.state_machine.update()
         Booster_state.update(0.0)
         Magnet_state.update(self.x, self.y)
-        if self.skill_time != False and get_time() - self.skill_time >= 30:
-            self.skill_time = False
         if self.invincible_time != False and get_time() - self.invincible_time >= 2:
             self.invincible_time = False
         if self.y <= -200 and self.game_over_toggle == False:
             self.Hp = 0.0
             self.game_over_toggle = True
             self.state_machine.handle_event(('GameOver', self.Hp))
+        if Magnet_state.return_magnet_time() == False:
+            Magnet_state.magnet_change(get_time(), 99999999, 120)
+            Magnet_state.update_magnet_pos(self.x, self.y)
 
     def handle_event(self, event):
-        if self.skill_time == False and event.key == SDLK_s:
-            Booster_state.booster_change(get_time(), 3.0)
-            self.skill_time = get_time()
         self.state_machine.handle_event(('INPUT', event))
 
     def draw(self):
@@ -100,7 +97,7 @@ class Girl_Character:
         return y
 
     def get_hit_box(self):
-        return self.x - 10, self.y - 60, self.x + 15, self.y + 45
+        return self.x - 10, self.y - 50, self.x + 15, self.y + 45
 
     def get_magnet_hit_box(self):
         pos = Magnet_state.return_magnet_pos()
@@ -124,7 +121,7 @@ class Girl_Character:
 
         if group == 'player:tile_object':
             if not self.fall_tile_collision and self.max_y >= (other.y + other.h):
-                self.y = (other.y + other.h) + 3
+                self.y = (other.y + other.h) + 3 - 10
                 self.max_y = (other.y + other.h) + 3
                 self.jumpAcceleration = -1.0
                 if self.state_machine.cur_state == state_machine.JumpFall or self.state_machine.cur_state == state_machine.DoubleJumpFall:

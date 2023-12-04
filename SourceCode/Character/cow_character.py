@@ -56,7 +56,6 @@ class Cow_Character:
         self.state_machine.start()
 
         self.invincible_time = False
-        self.skill_time = False
         self.fall_tile_collision = False
 
 
@@ -66,8 +65,6 @@ class Cow_Character:
         self.state_machine.update()
         Booster_state.update(0.0)
         Magnet_state.update(self.x, self.y)
-        if self.skill_time != False and get_time() - self.skill_time >= 10:
-            self.skill_time = False
         if self.invincible_time != False and get_time() - self.invincible_time >= 2:
             self.invincible_time = False
         if self.y <= -200 and self.game_over_toggle == False:
@@ -76,9 +73,6 @@ class Cow_Character:
             self.state_machine.handle_event(('GameOver', self.Hp))
 
     def handle_event(self, event):
-        if self.skill_time == False and event.key == SDLK_s:
-            Booster_state.booster_change(get_time(), 3.0)
-            self.skill_time = get_time()
         self.state_machine.handle_event(('INPUT', event))
 
     def draw(self):
@@ -113,12 +107,11 @@ class Cow_Character:
             global_variable.score += 10 * point_object_level
 
         if group == 'player:coin_object':
-            self.coin += 10
+            self.coin += 10 * 1.5
             global_variable.score += 15 * point_object_level
 
         if group == 'player:booster_object':
-            if self.skill_time == False or not Booster_state.return_booster_time():
-                Booster_state.booster_change(get_time(), 2.0)
+            Booster_state.booster_change(get_time(), 2.0)
 
         if group == 'player:magnet_object':
             Magnet_state.magnet_change(get_time())

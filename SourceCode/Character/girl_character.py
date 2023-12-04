@@ -66,7 +66,7 @@ class Girl_Character:
         self.state_machine.update()
         Booster_state.update(0.0)
         Magnet_state.update(self.x, self.y)
-        if self.skill_time != False and get_time() - self.skill_time >= 10:
+        if self.skill_time != False and get_time() - self.skill_time >= 30:
             self.skill_time = False
         if self.invincible_time != False and get_time() - self.invincible_time >= 2:
             self.invincible_time = False
@@ -117,8 +117,7 @@ class Girl_Character:
             global_variable.score += 15 * point_object_level
 
         if group == 'player:booster_object':
-            if self.skill_time == False or not Booster_state.return_booster_time():
-                Booster_state.booster_change(get_time(), 2.0)
+            Booster_state.booster_change(get_time(), 2.0)
 
         if group == 'player:magnet_object':
             Magnet_state.magnet_change(get_time())

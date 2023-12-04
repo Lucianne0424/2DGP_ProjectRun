@@ -1,4 +1,4 @@
-from pico2d import draw_rectangle, load_image, load_wav
+from pico2d import load_image, load_wav
 
 from SourceCode.Etc import game_speed
 from SourceCode.Etc.game_world import remove_object
@@ -59,7 +59,6 @@ class HurdleObject:
             self.rotate += 1.0
         else:
             self.image[self.hurdleName][int(self.frame)].draw(self.x, self.y)
-        draw_rectangle(*self.get_hit_box())
 
     def get_hit_box(self):
         return self.x - self.w / 2, self.y - self.h / 2, self.x + self.w / 2, self.y + self.h / 2

@@ -216,6 +216,7 @@ def draw():
             image.draw(MousePos_x, MousePos_y, 40, 40)
 
     game_world.render()
+    game_world.render_hit_box()
     update_canvas()
 
 

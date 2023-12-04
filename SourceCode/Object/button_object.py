@@ -1,8 +1,7 @@
-from pico2d import draw_rectangle, load_image, load_wav, load_font
+from pico2d import load_image, load_wav, load_font
 
-from SourceCode.Etc import game_speed, game_world, global_variable
+from SourceCode.Etc import global_variable
 from SourceCode.Object import point_object
-from SourceCode.Object.magnet_object import Magnet_state
 
 
 class ButtonObject:
@@ -40,7 +39,6 @@ class ButtonObject:
     def draw(self):
         self.image.draw(self.x, self.y, self.w, self.h)
         self.font.draw(self.x - self.pos, self.y, self.message, self.color)
-        draw_rectangle(*self.get_hit_box())
 
     def get_hit_box(self):
         return self.x - self.w / 2, self.y - self.h / 2, self.x + self.w / 2, self.y + self.h / 2
@@ -81,7 +79,6 @@ class SelectButtonObject:
 
     def draw(self):
         SelectButtonObject.image[self.index].draw(self.x, self.y, self.w, self.h)
-        draw_rectangle(*self.get_hit_box())
 
     def get_hit_box(self):
         return self.x - self.w / 2, self.y - self.h / 2, self.x + self.w / 2, self.y + self.h / 2
@@ -138,7 +135,6 @@ class LevelUpButtonObject:
 
         def draw(self):
             LevelUpButtonObject.image[self.index].draw(self.x, self.y, self.w, self.h)
-            draw_rectangle(*self.get_hit_box())
 
         def get_hit_box(self):
             return self.x - self.w / 2, self.y - self.h / 2, self.x + self.w / 2, self.y + self.h / 2

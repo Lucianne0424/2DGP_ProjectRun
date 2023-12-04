@@ -1,4 +1,4 @@
-from pico2d import draw_rectangle, load_image
+from pico2d import load_image
 
 from SourceCode.Etc import game_speed
 from SourceCode.Etc.game_world import remove_object
@@ -31,7 +31,6 @@ class TileObject:
 
     def draw(self):
         TileObject.image[self.index].draw(self.x, self.y, self.w, self.h)
-        draw_rectangle(*self.get_hit_box())
 
     def get_hit_box(self):
         return self.x - self.w / 2, self.y - self.h / 2, self.x + self.w / 2, self.y + self.h / 2

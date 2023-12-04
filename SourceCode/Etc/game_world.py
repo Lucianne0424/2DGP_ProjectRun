@@ -1,6 +1,8 @@
 # 게임 월드 모듈
 import pickle
 
+from pico2d import draw_rectangle
+
 objects = [[] for _ in range(7)]  # 레이어 구별
 # 충돌 그룹 정보를 dict로 표현
 collision_pairs = {}
@@ -47,6 +49,11 @@ def render():
     for layer in objects:
         for o in layer:
             o.draw()
+
+def render_hit_box():
+    for layer in objects:
+        for o in layer:
+            draw_rectangle(*o.get_hit_box())
 
 
 # 객체 삭제

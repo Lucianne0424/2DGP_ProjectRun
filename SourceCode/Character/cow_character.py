@@ -1,5 +1,5 @@
-from pico2d import draw_rectangle, get_time, load_image, load_wav, load_music
-from sdl2 import SDLK_s
+from pico2d import get_time, load_image, load_wav, load_music
+
 
 from SourceCode.Character import state_machine
 from SourceCode.Etc import game_speed, game_framework, global_variable
@@ -77,9 +77,6 @@ class Cow_Character:
 
     def draw(self):
         self.state_machine.draw()
-        draw_rectangle(*self.get_hit_box())
-        if Magnet_state.return_magnet_time() != False:
-            draw_rectangle(*self.get_magnet_hit_box())
 
     def G_force(self):
         y = game_speed.Game_Speed.return_spped(game_speed.PLAYER_SPEED_PPS) * self.jumpAcceleration * state_machine.jumpPower

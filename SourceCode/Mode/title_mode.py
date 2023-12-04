@@ -1,10 +1,10 @@
 from pico2d import get_events, clear_canvas, update_canvas, load_image
-from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE, SDLK_e, SDL_MOUSEMOTION, SDL_MOUSEBUTTONDOWN, \
+from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDL_MOUSEMOTION, SDL_MOUSEBUTTONDOWN, \
     SDL_BUTTON_LEFT
 
 from SourceCode.Etc import game_framework, mouse_event, game_world
 from SourceCode.Etc.global_variable import canvasSIZE, depth
-from SourceCode.Mode import test_play_mode, editor_mode, select_mode
+from SourceCode.Mode import editor_mode, select_mode
 from SourceCode.Object.button_object import ButtonObject
 
 

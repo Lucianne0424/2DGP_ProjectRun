@@ -1,4 +1,4 @@
-from pico2d import draw_rectangle, get_time, load_image, load_wav
+from pico2d import get_time, load_image, load_wav
 
 from SourceCode.Etc import game_speed
 from SourceCode.Etc.game_world import remove_object
@@ -94,7 +94,6 @@ class MagnetObject:
 
     def draw(self):
         self.image.draw(self.x, self.y, 40, 40)
-        draw_rectangle(*self.get_hit_box())
 
     def get_hit_box(self):
         return self.x - 20, self.y - 20, self.x + 20, self.y + 20

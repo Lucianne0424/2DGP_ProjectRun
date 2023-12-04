@@ -4,7 +4,7 @@ from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDL_MOUSEMOTION, SDL_MOUSEB
 
 from SourceCode.Etc import game_framework, game_world, game_speed, mouse_event, global_variable
 from SourceCode.Etc.global_variable import canvasSIZE, depth
-from SourceCode.Mode import test_play_mode, editor_mode, title_mode
+from SourceCode.Mode import test_play_mode, title_mode
 from SourceCode.Object import booster_object, magnet_object, button_object
 
 

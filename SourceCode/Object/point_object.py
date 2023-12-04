@@ -1,4 +1,4 @@
-from pico2d import draw_rectangle, load_image, load_wav
+from pico2d import load_image, load_wav
 
 from SourceCode.Etc import game_speed, game_world
 from SourceCode.Object.magnet_object import Magnet_state
@@ -46,7 +46,6 @@ class PointObject:
 
     def draw(self):
         self.image.draw(self.x, self.y, 30, 30)
-        draw_rectangle(*self.get_hit_box())
 
     def get_hit_box(self):
         return self.x - 15, self.y - 15, self.x + 15, self.y + 15

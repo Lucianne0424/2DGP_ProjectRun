@@ -28,4 +28,4 @@ price = {
     'Point_level': [i * 100 for i in range(levelMax['Point_level'])],
     'Hp_level': [i * 100 for i in range(levelMax['Hp_level'])]
 }
-depth = {'BackGround': 0, 'Tile': 1, 'Hurdle': 2, 'Player': 3, 'Item': 4, 'UI': 5, 'Button': 6}
+depth = {'BackGround': 0, 'Tile': 1, 'Gate': 2, 'Hurdle': 3, 'Player': 4, 'Item': 5, 'UI': 6, 'Button': 7}

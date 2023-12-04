@@ -6,7 +6,7 @@ from SourceCode.Etc import game_framework, game_world, mouse_event
 from SourceCode.Etc.global_variable import canvasSIZE, depth
 from SourceCode.Mode import title_mode
 from SourceCode.Object import tile_object, hurdle_object, point_object, coin_object, booster_object, magnet_object, \
-    healing_object
+    healing_object, gate_object
 
 MousePos_x, MousePos_y = 0, 0  # 마우스 위치
 Print_display_x = -canvasSIZE[0] - 200  # 초기 위치에서 얼만큼 움직였는지 ( 나중에 세이브를 위해 필요 )
@@ -27,7 +27,8 @@ object_type_list = [
     coin_object.CoinObject,
     booster_object.BoosterObject,
     magnet_object.MagnetObject,
-    healing_object.HealingObject
+    healing_object.HealingObject,
+    gate_object.GateObject
 ]
 object_type_len = len(object_type_list)
 tile_size = [100, 40]
@@ -78,6 +79,11 @@ class mouse_img_load:
         image = load_image('.//img//item//Healing.png')
 
     @staticmethod
+    def gate_object():
+        global image
+        image = load_image('.//img//Gate//gate.png')
+
+    @staticmethod
     def object_type(type, num):
         match (type):
             case 0:
@@ -94,6 +100,8 @@ class mouse_img_load:
                 mouse_img_load.magnet_load()
             case 6:
                 mouse_img_load.healing_load()
+            case 7:
+                mouse_img_load.gate_object()
 
 
 def create_object(type, num, x, y):
@@ -107,6 +115,9 @@ def create_object(type, num, x, y):
         case 2 | 3 | 4 | 5 | 6:
             t = object_type_list[type](x, y)
             game_world.add_object(t, depth['Item'])
+        case 7:
+            t = object_type_list[type](x, y)
+            game_world.add_object(t, depth['Gate'])
 
 
 def move_display(speed):
@@ -208,7 +219,7 @@ def draw():
     match (object_type):
         case 0:
             image.draw(MousePos_x, MousePos_y, tile_size[object_num % 2], image.h)
-        case 1:
+        case 1 | 7:
             image.draw(MousePos_x, MousePos_y)
         case 2 | 3:
             image.draw(MousePos_x, MousePos_y, 30, 30)

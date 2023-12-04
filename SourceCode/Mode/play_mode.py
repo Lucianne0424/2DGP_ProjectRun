@@ -43,6 +43,7 @@ def collision_pair_setting():
     game_world.add_collision_pair('player:tile_object', player, None)
     game_world.add_collision_pair('player:hurdle_object', player, None)
     game_world.add_collision_pair('player:healing_object', player, None)
+    game_world.add_collision_pair('player:gate_object', player, None)
 
 def init():
     global player

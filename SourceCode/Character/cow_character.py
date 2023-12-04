@@ -16,7 +16,6 @@ class Cow_Character:
                        'Double_Jump_Start': 6, 'GameOver': 20, 'Damage': 6}
 
     jump_sound = None
-    BGM = None
     game_over_sound = None
 
     def __init__(self):
@@ -38,10 +37,10 @@ class Cow_Character:
             Cow_Character.game_over_sound.set_volume(32)
 
 
-        if not Cow_Character.BGM:
-            Cow_Character.BGM = load_music('.//Sound//bgm_main'+ str(stage) + '.ogg')
-            Cow_Character.BGM.set_volume(50)
-        Cow_Character.BGM.repeat_play()
+
+        self.BGM = load_music('.//Sound//bgm_main'+ str(global_variable.stage) + '.ogg')
+        self.BGM.set_volume(50)
+        self.BGM.repeat_play()
 
 
 
@@ -104,7 +103,7 @@ class Cow_Character:
                 global_variable.mission_result += 1
 
         if group == 'player:coin_object':
-            self.coin += 10 * 1.5
+            self.coin += int(10 * 1.5)
             global_variable.score += 15 * point_object_level
             if global_variable.mission != False and global_variable.stage == 2:
                 global_variable.mission_result = self.coin

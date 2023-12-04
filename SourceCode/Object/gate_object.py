@@ -34,7 +34,7 @@ class GateObject:
         self.image.draw(self.x, self.y)
 
     def get_hit_box(self):
-        return self.x - self.w / 2 - 500, self.y - self.h / 2 - 500, self.x + self.w / 2, self.y + self.h / 2 + 500
+        return self.x - self.w / 2 - 550, self.y - self.h / 2 - 500, self.x + self.w / 2, self.y + self.h / 2 + 500
 
     def handle_collision(self, group, other):
         if group == 'player:gate_object':

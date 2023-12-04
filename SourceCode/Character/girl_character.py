@@ -37,11 +37,9 @@ class Girl_Character:
             Girl_Character.game_over_sound = load_wav('.//Sound//game_over_sound.ogg')
             Girl_Character.game_over_sound.set_volume(32)
 
-
-        if not Girl_Character.BGM:
-            Girl_Character.BGM = load_music('.//Sound//bgm_main'+ str(stage) + '.ogg')
-            Girl_Character.BGM.set_volume(50)
-        Girl_Character.BGM.repeat_play()
+        self.BGM = load_music('.//Sound//bgm_main' + str(global_variable.stage) + '.ogg')
+        self.BGM.set_volume(50)
+        self.BGM.repeat_play()
 
 
 
@@ -136,8 +134,8 @@ class Girl_Character:
                 self.state_machine.handle_event(('Damage', 0))
             elif Booster_state.return_booster_time():
                 global_variable.score += 30 * point_object_level
-            if global_variable.mission != False and global_variable.stage == 1 and not other.flying_toggle:
-                global_variable.mission_result += 1
+                if global_variable.mission != False and global_variable.stage == 1 and not other.flying_toggle:
+                    global_variable.mission_result += 1
 
 
         if group == 'player:healing_object':

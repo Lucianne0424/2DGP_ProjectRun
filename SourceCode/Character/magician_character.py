@@ -36,11 +36,9 @@ class Magician_Character:
             Magician_Character.game_over_sound = load_wav('.//Sound//game_over_sound.ogg')
             Magician_Character.game_over_sound.set_volume(32)
 
-
-        if not Magician_Character.BGM:
-            Magician_Character.BGM = load_music('.//Sound//bgm_main'+ str(stage) + '.ogg')
-            Magician_Character.BGM.set_volume(50)
-        Magician_Character.BGM.repeat_play()
+        self.BGM = load_music('.//Sound//bgm_main' + str(global_variable.stage) + '.ogg')
+        self.BGM.set_volume(50)
+        self.BGM.repeat_play()
 
 
 

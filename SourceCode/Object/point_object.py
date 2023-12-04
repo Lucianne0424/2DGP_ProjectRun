@@ -55,3 +55,34 @@ class PointObject:
         if group == 'player:point_object':
             PointObject.sound.play()
             game_world.remove_object(self)
+
+
+class UIPointObject:
+    image = None
+    level = 0  # point_object_level과 level의 값이 다르면 이미지를 새롭게 로드한다.
+    type = 'UI'
+
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+
+        if UIPointObject.image == None:
+            UIPointObject.image = load_image(point_object_level_image_load())
+            UIPointObject.level = point_object_level
+
+    def __setstate__(self, state):
+        self.__init__(state['x'], state['y'])
+
+    def update(self):
+        if point_object_level != UIPointObject.level:
+            UIPointObject.image = load_image(point_object_level_image_load())
+            UIPointObject.level = point_object_level
+
+    def draw(self):
+        self.image.draw(self.x, self.y, 50, 50)
+
+    def get_hit_box(self):
+        pass
+
+    def handle_collision(self, group, other):
+        pass
+

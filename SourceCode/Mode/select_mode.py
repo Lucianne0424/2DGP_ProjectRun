@@ -2,10 +2,10 @@ from pico2d import get_events, clear_canvas, update_canvas, load_image, load_fon
 from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDL_MOUSEMOTION, SDL_MOUSEBUTTONDOWN, \
     SDL_BUTTON_LEFT
 
-from SourceCode.Etc import game_framework, game_world, game_speed, mouse_event, global_variable
+from SourceCode.Etc import game_framework, game_world, mouse_event, global_variable
 from SourceCode.Etc.global_variable import canvasSIZE, depth
-from SourceCode.Mode import test_play_mode, editor_mode, title_mode
-from SourceCode.Object import booster_object, magnet_object, button_object, point_object
+from SourceCode.Mode import test_play_mode, title_mode
+from SourceCode.Object import button_object, point_object
 
 
 class UI:
@@ -24,20 +24,35 @@ class UI:
             self.w, self.h = 700, 400
 
 
-        self.font = load_font('.//DataFile//KORAIL2007.TTF', 30)
+        self.font = load_font('.//DataFile//KORAIL2007.TTF', 20)
         self.color = (0, 0, 0)
 
 
     def draw(self):
         self.image.draw(self.x, self.y, self.w, self.h)
+        if self.type == 'store':
+            self.font.draw(self.x - 155, self.y + 88, '점수 업글', self.color)
+            self.font.draw(self.x - 140, self.y + 50, 'Lv : '+ str(point_object.point_object_level), self.color)
+
+            self.font.draw(self.x + 75, self.y + 88, 'Hp 업글', self.color)
+            self.font.draw(self.x + 80, self.y + 50, 'Lv : ' + str(global_variable.hpLevel), self.color)
+
+        elif self.type == 'character':
+            self.font.draw(self.x - 265, self.y + 88, '기본 캐릭터', self.color)
+            self.font.draw(self.x - 20, self.y + 88, '카우', self.color)
+            self.font.draw(self.x + 182, self.y + 88, '매지션', self.color)
 
     def update(self):
         pass
 
 
 def init():
-    global image
+    global image, hp_image, character_image
+
     image = load_image('img/UI//BGI.png')
+    hp_image = load_image('img/Item//Healing.png')
+    character_image = [load_image('img/Character//Girl//STAY.png'), load_image('img/Character//Cow//STAY.png'), load_image('img/Character//Magician//STAY.png')]
+
     game_world.add_object(UI('store'), depth['UI'])
     game_world.add_object(UI('character'), depth['UI'])
 
@@ -48,6 +63,9 @@ def init():
     game_world.add_object(button_object.SelectButtonObject(590, 320, 'temp2_character_choice','temp2'), depth['Button'])
     game_world.add_object(button_object.LevelUpButtonObject(885, 320, 'Point_level','Point_level'), depth['Button'])
     game_world.add_object(button_object.LevelUpButtonObject(1115, 320, 'Hp_level','Hp_level'), depth['Button'])
+
+
+    game_world.add_object(point_object.UIPointObject(885, 430), depth['UI'])
 
 
 
@@ -127,6 +145,12 @@ def draw():
     clear_canvas()
     image.draw_to_origin(0, 0, canvasSIZE[0], canvasSIZE[1])
     game_world.render()
+    hp_image.draw(1115, 430, 80, 80)
+
+    character_image[0].draw(165, 440)
+    character_image[1].draw(380, 420)
+    character_image[2].draw(590, 420)
+
     update_canvas()
 
 

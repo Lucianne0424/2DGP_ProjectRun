@@ -9,11 +9,11 @@ from SourceCode.Object.magnet_object import Magnet_state
 from SourceCode.Object.point_object import point_object_level
 
 
-class Girl_Character:
+class Cow_Character:
     name_list = ['Run', 'Jump_Start', 'Jump_Fall', 'Landing', 'Double_Jump_Start', 'GameOver', 'Damage']
 
-    animation_names = {'Run': 10, 'Jump_Start': 6, 'Jump_Fall': 6, 'Landing': 3,
-                       'Double_Jump_Start': 7, 'GameOver': 11, 'Damage': 7}
+    animation_names = {'Run': 6, 'Jump_Start': 3, 'Jump_Fall': 9, 'Landing': 3,
+                       'Double_Jump_Start': 6, 'GameOver': 20, 'Damage': 6}
 
     jump_sound = None
     BGM = None
@@ -29,28 +29,28 @@ class Girl_Character:
         self.jumpAcceleration = -1.0
         self.game_over_toggle = False
 
-        if not Girl_Character.jump_sound:
-            Girl_Character.jump_sound = load_wav('.//Sound//jump_sound.ogg')
-            Girl_Character.jump_sound.set_volume(32)
+        if not Cow_Character.jump_sound:
+            Cow_Character.jump_sound = load_wav('.//Sound//jump_sound.ogg')
+            Cow_Character.jump_sound.set_volume(32)
 
-        if not Girl_Character.game_over_sound:
-            Girl_Character.game_over_sound = load_wav('.//Sound//game_over_sound.ogg')
-            Girl_Character.game_over_sound.set_volume(32)
+        if not Cow_Character.game_over_sound:
+            Cow_Character.game_over_sound = load_wav('.//Sound//game_over_sound.ogg')
+            Cow_Character.game_over_sound.set_volume(32)
 
 
-        if not Girl_Character.BGM:
-            Girl_Character.BGM = load_music('.//Sound//bgm_main'+ str(stage) + '.ogg')
-            Girl_Character.BGM.set_volume(50)
-        Girl_Character.BGM.repeat_play()
+        if not Cow_Character.BGM:
+            Cow_Character.BGM = load_music('.//Sound//bgm_main'+ str(stage) + '.ogg')
+            Cow_Character.BGM.set_volume(50)
+        Cow_Character.BGM.repeat_play()
 
 
 
         self.coin = 0
 
         self.images = {}
-        for name in Girl_Character.name_list:
+        for name in Cow_Character.name_list:
             self.images[name] = [
-                load_image('.//img//Character//Girl//' + name + '//' + name + '_' + str(i) + '.png') for i in range(0, Girl_Character.animation_names[name])]
+                load_image('.//img//Character//Cow//' + name + '//' + name + '_' + str(i) + '.png') for i in range(0, Cow_Character.animation_names[name])]
 
         self.state_machine = state_machine.StateMachine(self)
         self.state_machine.start()

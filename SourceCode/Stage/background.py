@@ -5,9 +5,9 @@ from SourceCode.Etc.global_variable import depth
 
 
 def add_back_ground():
-    if game_world.objects[0][0].x <= -1280:
-        game_world.remove_object(game_world.objects[0][0])
-        background = BackGround(game_world.objects[0][0].x + 1280)
+    if game_world.objects[depth['BackGround']][0].x <= -1280:
+        game_world.remove_object(game_world.objects[depth['BackGround']][0])
+        background = BackGround(game_world.objects[depth['BackGround']][0].x + 1280)
         game_world.add_object(background, depth['BackGround'])
 
 

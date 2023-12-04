@@ -6,6 +6,7 @@ from SourceCode.Character.magician_character import Magician_Character
 from SourceCode.Etc import game_framework, game_speed, game_world, global_variable
 from SourceCode.Etc.global_variable import canvasSIZE, depth
 from SourceCode.Object import point_object
+from SourceCode.Object.play_ui_object import Play_Ui_Object
 from SourceCode.Stage.background import BackGround
 from SourceCode.Stage.create_object import setting_stage, object_create
 
@@ -61,6 +62,8 @@ def init():
 
     game_world.add_object(BackGround(0), depth['BackGround'])
     game_world.add_object(BackGround(canvasSIZE[0]), depth['BackGround'])
+
+    game_world.add_object(Play_Ui_Object(), depth['UI'])
 
     global_variable.score = 0
     setting_stage()

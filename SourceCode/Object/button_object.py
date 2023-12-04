@@ -1,6 +1,7 @@
 from pico2d import draw_rectangle, load_image, load_wav, load_font
 
 from SourceCode.Etc import game_speed, game_world, global_variable
+from SourceCode.Object import point_object
 from SourceCode.Object.magnet_object import Magnet_state
 
 
@@ -47,7 +48,7 @@ class ButtonObject:
     def handle_collision(self, group, other):
         pass
 
-class SelectUpButtonObject:
+class SelectButtonObject:
     image = []
     type = 'Button'
     sound = None
@@ -59,14 +60,14 @@ class SelectUpButtonObject:
         self.index = global_variable.character_select[character_num]
         self.color = (0, 0, 0)
 
-        if not SelectUpButtonObject.image:
-            SelectUpButtonObject.image.append(load_image('.//img//UI//lock_button.png'))
-            SelectUpButtonObject.image.append(load_image('.//img//UI//select_2_button.png'))
-            SelectUpButtonObject.image.append(load_image('.//img//UI//select_1_button.png'))
+        if not SelectButtonObject.image:
+            SelectButtonObject.image.append(load_image('.//img//UI//lock_button.png'))
+            SelectButtonObject.image.append(load_image('.//img//UI//select_2_button.png'))
+            SelectButtonObject.image.append(load_image('.//img//UI//select_1_button.png'))
 
-        if not SelectUpButtonObject.sound:
-            SelectUpButtonObject.sound = load_wav('.//Sound//button_sound.ogg')
-            SelectUpButtonObject.sound.set_volume(32)
+        if not SelectButtonObject.sound:
+            SelectButtonObject.sound = load_wav('.//Sound//button_sound.ogg')
+            SelectButtonObject.sound.set_volume(32)
 
         self.w = 150
         self.h = 50
@@ -79,7 +80,7 @@ class SelectUpButtonObject:
 
 
     def draw(self):
-        SelectUpButtonObject.image[self.index].draw(self.x, self.y, self.w, self.h)
+        SelectButtonObject.image[self.index].draw(self.x, self.y, self.w, self.h)
         draw_rectangle(*self.get_hit_box())
 
     def get_hit_box(self):
@@ -87,3 +88,60 @@ class SelectUpButtonObject:
 
     def handle_collision(self, group, other):
         pass
+
+
+class LevelUpButtonObject:
+        image = []
+        type = 'Button'
+        sound = None
+
+        def __init__(self, x, y, command, level_type):
+            self.x, self.y = x, y
+            self.level_type = level_type
+            self.command = command
+            self.index = 1
+
+            self.color = (0, 0, 0)
+
+            if not LevelUpButtonObject.image:
+                LevelUpButtonObject.image.append(load_image('.//img//UI//store_button_max.png'))
+                LevelUpButtonObject.image.append(load_image('.//img//UI//store_button_level_up_off.png'))
+                LevelUpButtonObject.image.append(load_image('.//img//UI//store_button_level_up_on.png'))
+
+            if not LevelUpButtonObject.sound:
+                LevelUpButtonObject.sound = load_wav('.//Sound//button_sound.ogg')
+                LevelUpButtonObject.sound.set_volume(32)
+
+            self.w = 150
+            self.h = 50
+
+        def __setstate__(self, state):
+            pass
+
+        def update(self):
+            if self.level_type == 'Point_level':
+                if point_object.point_object_level >= global_variable.levelMax[self.level_type] - 1:
+                    self.index = 0
+                elif global_variable.price[self.level_type][point_object.point_object_level] <= global_variable.coin:
+                    self.index = 2
+                else:
+                    self.index = 1
+
+            elif self.level_type == 'Hp_level':
+                if global_variable.hpLevel >= global_variable.levelMax[self.level_type] - 1:
+                    self.index = 0
+                elif global_variable.price[self.level_type][global_variable.hpLevel] <= global_variable.coin:
+                    self.index = 2
+                else:
+                    self.index = 1
+
+
+        def draw(self):
+            LevelUpButtonObject.image[self.index].draw(self.x, self.y, self.w, self.h)
+            draw_rectangle(*self.get_hit_box())
+
+        def get_hit_box(self):
+            return self.x - self.w / 2, self.y - self.h / 2, self.x + self.w / 2, self.y + self.h / 2
+
+        def handle_collision(self, group, other):
+            pass

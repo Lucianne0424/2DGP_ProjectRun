@@ -5,7 +5,7 @@ from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDL_MOUSEMOTION, SDL_MOUSEB
 from SourceCode.Etc import game_framework, game_world, game_speed, mouse_event, global_variable
 from SourceCode.Etc.global_variable import canvasSIZE, depth
 from SourceCode.Mode import test_play_mode, editor_mode, title_mode
-from SourceCode.Object import booster_object, magnet_object, button_object
+from SourceCode.Object import booster_object, magnet_object, button_object, point_object
 
 
 class UI:
@@ -43,9 +43,11 @@ def init():
 
     game_world.add_object(button_object.ButtonObject(1150, 170, 'play', '플레이', 45), depth['Button'])
     game_world.add_object(button_object.ButtonObject(1150, 70, 'previous', '이 전', 34), depth['Button'])
-    game_world.add_object(button_object.SelectUpButtonObject(170, 320, 'girl_character_choice','Girl'), depth['Button'])
-    game_world.add_object(button_object.SelectUpButtonObject(380, 320, 'temp1_character_choice','temp1'), depth['Button'])
-    game_world.add_object(button_object.SelectUpButtonObject(590, 320, 'temp2_character_choice','temp2'), depth['Button'])
+    game_world.add_object(button_object.SelectButtonObject(170, 320, 'girl_character_choice','Girl'), depth['Button'])
+    game_world.add_object(button_object.SelectButtonObject(380, 320, 'temp1_character_choice','temp1'), depth['Button'])
+    game_world.add_object(button_object.SelectButtonObject(590, 320, 'temp2_character_choice','temp2'), depth['Button'])
+    game_world.add_object(button_object.LevelUpButtonObject(885, 320, 'Point_level','Point_level'), depth['Button'])
+    game_world.add_object(button_object.LevelUpButtonObject(1115, 320, 'Hp_level','Hp_level'), depth['Button'])
 
 
 
@@ -93,6 +95,25 @@ def handle_events():
                         t.sound.play()
                         if resetButton('temp2'):
                             global_variable.character_select['temp2'] = 2
+
+                    elif t.command == 'Point_level':
+                        temp = 'Point_level'
+                        t.sound.play()
+                        if global_variable.levelMax[temp] - 1 > point_object.point_object_level:
+                            print(global_variable.coin)
+                            if global_variable.price[temp][point_object.point_object_level] <= global_variable.coin:
+                                global_variable.coin -= global_variable.price[temp][point_object.point_object_level]
+                                point_object.point_object_level += 1
+
+
+
+                    elif t.command == 'Hp_level':
+                        temp = 'Hp_level'
+                        t.sound.play()
+                        if global_variable.levelMax[temp] - 1 > global_variable.hpLevel:
+                            if global_variable.price[temp][global_variable.hpLevel] <= global_variable.coin:
+                                global_variable.coin -= global_variable.price[temp][global_variable.hpLevel]
+                                global_variable.hpLevel += 1
 
 
 

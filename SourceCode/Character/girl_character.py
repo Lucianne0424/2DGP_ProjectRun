@@ -267,7 +267,7 @@ class Girl_Character:
 
     def __init__(self):
         self.x, self.y, self.max_y = 300, 150, 150
-        self.MaxHp = 100.0 + (hpLevel * 20)
+        self.MaxHp = 50.0 + (global_variable.hpLevel * 10)
         self.Hp = self.MaxHp
         self.frame = 0
 

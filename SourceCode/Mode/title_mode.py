@@ -4,7 +4,7 @@ from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE, SDLK_e, SDL_MOU
 
 from SourceCode.Etc import game_framework, mouse_event, game_world
 from SourceCode.Etc.global_variable import canvasSIZE, depth
-from SourceCode.Mode import test_play_mode, editor_mode
+from SourceCode.Mode import test_play_mode, editor_mode, select_mode
 from SourceCode.Object.button_object import ButtonObject
 
 
@@ -38,7 +38,7 @@ def handle_events():
                 if t != False:
                     if t.command == 'play':
                         t.sound.play()
-                        game_framework.change_mode(test_play_mode)
+                        game_framework.change_mode(select_mode)
                     elif t.command == 'editor':
                         t.sound.play()
                         game_framework.change_mode(editor_mode)

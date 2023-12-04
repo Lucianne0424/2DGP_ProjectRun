@@ -37,6 +37,8 @@ class UI:
             self.font.draw(self.x + 75, self.y + 88, 'Hp 업글', self.color)
             self.font.draw(self.x + 80, self.y + 50, 'Lv : ' + str(global_variable.hpLevel), self.color)
 
+            self.font.draw(self.x - 220, self.y + 220, '코인 : ' + str(global_variable.coin), self.color)
+
         elif self.type == 'character':
             self.font.draw(self.x - 265, self.y + 88, '기본 캐릭터', self.color)
             self.font.draw(self.x - 20, self.y + 88, '카우', self.color)
@@ -56,13 +58,17 @@ def init():
     game_world.add_object(UI('store'), depth['UI'])
     game_world.add_object(UI('character'), depth['UI'])
 
-    game_world.add_object(button_object.ButtonObject(1150, 170, 'play', '플레이', 45), depth['Button'])
     game_world.add_object(button_object.ButtonObject(1150, 70, 'previous', '이 전', 34), depth['Button'])
     game_world.add_object(button_object.SelectButtonObject(170, 320, 'girl_character_choice','Girl'), depth['Button'])
     game_world.add_object(button_object.SelectButtonObject(380, 320, 'cow_character_choice','Cow'), depth['Button'])
     game_world.add_object(button_object.SelectButtonObject(590, 320, 'magician_character_choice','Magician'), depth['Button'])
     game_world.add_object(button_object.LevelUpButtonObject(885, 320, 'Point_level','Point_level'), depth['Button'])
     game_world.add_object(button_object.LevelUpButtonObject(1115, 320, 'Hp_level','Hp_level'), depth['Button'])
+
+    game_world.add_object(button_object.ButtonObject(300, 180, 'stage_1', '스테이지 1 플레이', 125, 300), depth['Button'])
+    game_world.add_object(button_object.ButtonObject(300, 80, 'stage_2', '스테이지 2 플레이', 125, 300), depth['Button'])
+    game_world.add_object(button_object.ButtonObject(700, 180, 'stage_3', '스테이지 3 플레이', 125, 300), depth['Button'])
+    game_world.add_object(button_object.ButtonObject(700, 80, 'editor', '에디터 맵 플레이', 115, 300), depth['Button'])
 
 
     game_world.add_object(point_object.UIPointObject(885, 430), depth['UI'])
@@ -96,8 +102,21 @@ def handle_events():
                     if t.command == 'previous':
                         t.sound.play()
                         game_framework.change_mode(title_mode)
-                    elif t.command == 'play':
+                    elif t.command == 'stage_1':
                         t.sound.play()
+                        global_variable.stage = 1
+                        game_framework.change_mode(play_mode)
+                    elif t.command == 'stage_2':
+                        t.sound.play()
+                        global_variable.stage = 2
+                        game_framework.change_mode(play_mode)
+                    elif t.command == 'stage_3':
+                        t.sound.play()
+                        global_variable.stage = 3
+                        game_framework.change_mode(play_mode)
+                    elif t.command == 'editor':
+                        t.sound.play()
+                        global_variable.stage = 0
                         game_framework.change_mode(play_mode)
                     elif t.command == 'girl_character_choice':
                         t.sound.play()

@@ -35,6 +35,12 @@ def init():
     game_world.add_object(button_object.ButtonObject(size_x + 150, size_y - 200, 'next', '확 인', 34), depth['Button'])
     game_world.add_object(button_object.ButtonObject(size_x - 150, size_y - 200, 'replay', '다시하기', 58), depth['Button'])
 
+    if global_variable.mission <= global_variable.mission_result:
+        if global_variable.stage == 1:
+            global_variable.character_select['Cow'] = 1
+        elif global_variable.stage == 2:
+            global_variable.character_select['Magician'] = 1
+
 
 def finish():
     game_world.clear()

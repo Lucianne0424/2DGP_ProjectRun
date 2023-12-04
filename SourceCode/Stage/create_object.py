@@ -24,8 +24,10 @@ def setting_stage():
     global object_information
     global object_len
 
-
-    object_information = game_world.load_world(".//DataFile//editor_mode_object_data.pickle")
+    if global_variable.stage == 0:
+        object_information = game_world.load_world(".//DataFile//editor_mode_object_data.pickle")
+    else:
+        object_information = game_world.load_world(".//DataFile//stage"+ str(global_variable.stage) +"_object_data.pickle")
     object_len['Item'] = len(object_information[depth['Item']])
     object_len['Tile'] = len(object_information[depth['Tile']])
     object_len['Hurdle'] = len(object_information[depth['Hurdle']])

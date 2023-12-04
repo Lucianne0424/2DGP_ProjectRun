@@ -10,7 +10,7 @@ class ButtonObject:
     sound = None
     font = None
 
-    def __init__(self, x, y, command, message, pos):
+    def __init__(self, x, y, command, message, pos, size_x = 200):
         self.x, self.y = x, y
         self.message = message
         self.pos = pos
@@ -27,7 +27,7 @@ class ButtonObject:
             ButtonObject.sound = load_wav('.//Sound//button_sound.ogg')
             ButtonObject.sound.set_volume(32)
 
-        self.w = 200
+        self.w = size_x
         self.h = ButtonObject.image.h
 
     def __setstate__(self, state):

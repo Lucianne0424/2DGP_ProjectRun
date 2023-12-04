@@ -4,7 +4,7 @@ from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDL_MOUSEMOTION, SDL_MOUSEB
 
 from SourceCode.Etc import game_framework, game_world, mouse_event, global_variable
 from SourceCode.Etc.global_variable import canvasSIZE, depth
-from SourceCode.Mode import test_play_mode, title_mode
+from SourceCode.Mode import play_mode, title_mode
 from SourceCode.Object import button_object, point_object
 
 
@@ -59,8 +59,8 @@ def init():
     game_world.add_object(button_object.ButtonObject(1150, 170, 'play', '플레이', 45), depth['Button'])
     game_world.add_object(button_object.ButtonObject(1150, 70, 'previous', '이 전', 34), depth['Button'])
     game_world.add_object(button_object.SelectButtonObject(170, 320, 'girl_character_choice','Girl'), depth['Button'])
-    game_world.add_object(button_object.SelectButtonObject(380, 320, 'temp1_character_choice','temp1'), depth['Button'])
-    game_world.add_object(button_object.SelectButtonObject(590, 320, 'temp2_character_choice','temp2'), depth['Button'])
+    game_world.add_object(button_object.SelectButtonObject(380, 320, 'cow_character_choice','Cow'), depth['Button'])
+    game_world.add_object(button_object.SelectButtonObject(590, 320, 'magician_character_choice','Magician'), depth['Button'])
     game_world.add_object(button_object.LevelUpButtonObject(885, 320, 'Point_level','Point_level'), depth['Button'])
     game_world.add_object(button_object.LevelUpButtonObject(1115, 320, 'Hp_level','Hp_level'), depth['Button'])
 
@@ -98,21 +98,21 @@ def handle_events():
                         game_framework.change_mode(title_mode)
                     elif t.command == 'play':
                         t.sound.play()
-                        game_framework.change_mode(test_play_mode)
+                        game_framework.change_mode(play_mode)
                     elif t.command == 'girl_character_choice':
                         t.sound.play()
                         if resetButton('Girl'):
                             global_variable.character_select['Girl'] = 2
 
-                    elif t.command == 'temp1_character_choice':
+                    elif t.command == 'cow_character_choice':
                         t.sound.play()
-                        if resetButton('temp1'):
-                            global_variable.character_select['temp1'] = 2
+                        if resetButton('Cow'):
+                            global_variable.character_select['Cow'] = 2
 
-                    elif t.command == 'temp2_character_choice':
+                    elif t.command == 'magician_character_choice':
                         t.sound.play()
-                        if resetButton('temp2'):
-                            global_variable.character_select['temp2'] = 2
+                        if resetButton('Magician'):
+                            global_variable.character_select['Magician'] = 2
 
                     elif t.command == 'Point_level':
                         temp = 'Point_level'

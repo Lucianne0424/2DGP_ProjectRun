@@ -91,7 +91,7 @@ class Cow_Character:
         return y
 
     def get_hit_box(self):
-        return self.x - 10, self.y - 60, self.x + 15, self.y + 45
+        return self.x - 10, self.y - 50, self.x + 15, self.y + 45
 
     def get_magnet_hit_box(self):
         pos = Magnet_state.return_magnet_pos()
@@ -115,7 +115,7 @@ class Cow_Character:
 
         if group == 'player:tile_object':
             if not self.fall_tile_collision and self.max_y >= (other.y + other.h):
-                self.y = (other.y + other.h) + 3
+                self.y = (other.y + other.h) + 3 - 10
                 self.max_y = (other.y + other.h) + 3
                 self.jumpAcceleration = -1.0
                 if self.state_machine.cur_state == state_machine.JumpFall or self.state_machine.cur_state == state_machine.DoubleJumpFall:

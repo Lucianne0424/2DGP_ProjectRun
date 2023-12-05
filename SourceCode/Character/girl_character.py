@@ -41,6 +41,9 @@ class Girl_Character:
         self.BGM.set_volume(50)
         self.BGM.repeat_play()
 
+        self.hurdle_sound = load_wav('.//Sound//g_obs1.ogg')
+        self.hurdle_sound.set_volume(20)
+
 
 
         self.coin = 0
@@ -65,7 +68,7 @@ class Girl_Character:
         Magnet_state.update(self.x, self.y)
         if self.skill_time != False and get_time() - self.skill_time >= 30:
             self.skill_time = False
-        if self.invincible_time != False and get_time() - self.invincible_time >= 2:
+        if self.invincible_time != False and get_time() - self.invincible_time >= 1:
             self.invincible_time = False
         if self.y <= -200 and self.game_over_toggle == False:
             self.Hp = 0.0
@@ -131,6 +134,7 @@ class Girl_Character:
         if group == 'player:hurdle_object':
             if self.invincible_time == False and not Booster_state.return_booster_time():
                 self.invincible_time = get_time()
+                self.hurdle_sound.play()
                 self.state_machine.handle_event(('Damage', 0))
             elif Booster_state.return_booster_time():
                 global_variable.score += 30 * point_object_level

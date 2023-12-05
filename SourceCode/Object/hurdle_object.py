@@ -26,8 +26,6 @@ class HurdleObject:
         if not HurdleObject.sound:
             HurdleObject.sound.append(load_wav('.//Sound//g_obs2.ogg'))
             HurdleObject.sound[0].set_volume(20)
-            HurdleObject.sound.append(load_wav('.//Sound//g_obs1.ogg'))
-            HurdleObject.sound[1].set_volume(20)
 
         self.w = HurdleObject.image[self.hurdleName][0].w
         self.h = HurdleObject.image[self.hurdleName][0].h
@@ -68,5 +66,3 @@ class HurdleObject:
             if Booster_state.return_booster_time():
                 HurdleObject.sound[0].play()
                 self.flying_toggle = True
-            else:
-                HurdleObject.sound[1].play()

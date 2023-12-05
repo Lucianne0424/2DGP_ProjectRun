@@ -133,9 +133,9 @@ class Cow_Character:
                 self.state_machine.handle_event(('Damage', 0))
             elif Booster_state.return_booster_time():
                 global_variable.score += 30 * point_object_level
+                if global_variable.mission != False and global_variable.stage == 1 and not other.flying_toggle:
+                    global_variable.mission_result += 1
 
-            if global_variable.mission != False and global_variable.stage == 1 and not other.flying_toggle:
-                global_variable.mission_result += 1
 
 
         if group == 'player:healing_object':

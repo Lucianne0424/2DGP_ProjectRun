@@ -70,7 +70,7 @@ class GameOver:
         if player.frame == player.max_frame:
             game_speed.speed = 0
             player.BGM.stop()
-            global_variable.coin = player.coin
+            global_variable.coin += player.coin
             global_variable.playerCoin = player.coin
             game_framework.change_mode(game_over_mode)
 
